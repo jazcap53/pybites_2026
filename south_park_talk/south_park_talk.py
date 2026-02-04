@@ -38,7 +38,7 @@ def format_content_lines(content_lines):
 
 
 def line_to_list_of_words(line):
-    matches = re.findall(r'([a-z\'-]+)', line, flags=re.IGNORECASE)
+    matches = re.findall(r'([a-z&\'-]+)', line, flags=re.IGNORECASE)
     return matches
 
 
@@ -56,10 +56,10 @@ def get_num_words_spoken_by_character_per_episode(content):
     for line in formatted_content:
         # season, episode, speaker, speech = line.split(',', maxsplit=3)
         season, episode, speaker, speech = line
-        if (season, episode, speaker) == ('1', '6', 'Stan'):
-            print(speech)
         # character_dict[speaker].update({episode: line_to_list_of_words(speech)})
         character_dict[speaker].update({episode: len(line_to_list_of_words(speech))})
+        if (season, episode, speaker) == ('1', '5', 'Stan'):
+            print(speech, ' | ', len(line_to_list_of_words(speech)))
         # character_dict[speaker][episode] += len(line_to_list_of_words(speech))
     return character_dict
 
