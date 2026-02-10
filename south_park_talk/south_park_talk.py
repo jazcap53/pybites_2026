@@ -38,7 +38,7 @@ def format_content_lines(content_lines):
 
 
 def line_to_list_of_words(line):
-    matches = re.findall(r'([a-z&\'-]+)', line, flags=re.IGNORECASE)
+    matches = re.findall(r'([a-zA-Z&\'-]+)', line)
     return matches
 
 
