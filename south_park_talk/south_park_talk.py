@@ -40,7 +40,7 @@ def format_content_lines(content_lines):
 def clean_up_line(line):
     ret_line = ''
     for c in line:
-        if c in string.ascii_letters or c in "\'-" or c in string.whitespace:
+        if c in string.ascii_letters or c == '-' or c in string.whitespace:
             ret_line += c
         elif c == '&':
             ret_line += 'and'
@@ -50,7 +50,7 @@ def clean_up_line(line):
 
 
 def line_to_list_of_words(line):
-    matches = re.findall(r'([a-zA-Z&\'-]+)', line)
+    matches = re.findall(r'([a-zA-Z\'-]+)', line)
     return matches
 
 
@@ -66,14 +66,11 @@ def get_num_words_spoken_by_character_per_episode(content):
     character_dict = defaultdict(Counter)
 
     for line in formatted_content:
-        # season, episode, speaker, speech = line.split(',', maxsplit=3)
         season, episode, speaker, speech = line
         speech = clean_up_line(speech)
-        # character_dict[speaker].update({episode: line_to_list_of_words(speech)})
         character_dict[speaker].update({episode: len(line_to_list_of_words(speech))})
         if (season, episode, speaker) == ('1', '1', 'Cartman'):
             print(speech, ' | ', len(line_to_list_of_words(speech)))
-        # character_dict[speaker][episode] += len(line_to_list_of_words(speech))
     return character_dict
 
 
