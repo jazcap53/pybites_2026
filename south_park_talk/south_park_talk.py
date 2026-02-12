@@ -68,9 +68,10 @@ def get_num_words_spoken_by_character_per_episode(content):
     for line in formatted_content:
         season, episode, speaker, speech = line
         speech = clean_up_line(speech)
-        character_dict[speaker].update({episode: len(line_to_list_of_words(speech))})
+        speech_words_list = line_to_list_of_words(speech)
+        character_dict[speaker].update({episode: len(speech_words_list)})
         if (season, episode, speaker) == ('1', '1', 'Cartman'):
-            print(speech, ' | ', len(line_to_list_of_words(speech)))
+            print(speech, ' | ', len(speech_words_list))
     return character_dict
 
 
