@@ -55,7 +55,7 @@ with open('All-seasons.csv', newline='') as f:
         season, episode, character, speech = line
         # print(speech)
         this_season, this_episode = int(season), int(episode)
-        if this_season > curr_season:
+        if this_season != curr_season:
             curr_season = this_season
             curr_episode = 1
         elif this_episode > curr_episode:

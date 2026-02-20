@@ -1,7 +1,7 @@
 import pytest
 
-from south_park_talk import (get_season_csv_file,
-                       get_num_words_spoken_by_character_per_episode)
+from south_park_talk_old import (get_season_csv_file,
+                                 get_num_words_spoken_by_character_per_episode)
 
 
 @pytest.fixture(scope="module")

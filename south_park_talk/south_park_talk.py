@@ -1,10 +1,9 @@
 from collections import Counter, defaultdict
 import csv
-import re
-import requests
-import string
 
-CSV_URL = 'https://raw.githubusercontent.com/pybites/SouthParkData/master/by-season/Season-{}.csv'  # noqa E501
+import requests
+
+CSV_URL = 'https://raw.githubusercontent.com/pybites/SouthParkData/master/by-season/Season-{}.csv' # noqa E501
 
 
 def get_season_csv_file(season):
@@ -15,66 +14,44 @@ def get_season_csv_file(season):
         return download.content.decode('utf-8')
 
 
-def format_content_lines(content_lines):
-    good_lines = []
-    full_speech = ''
-    season, episode, speaker, speech_so_far = '', '', '', ''
-    for line in content_lines:
-        line = line.rstrip()
-        if not line:
-            continue
-        if line[0].isdigit():  # start of speech
-            season, episode, speaker, speech_so_far = line.split(',', maxsplit=3)
-        elif line == '"':  # reached end of speech; store and reset
-            full_speech = speech_so_far.lstrip('"')
-            good_lines.append((season, episode, speaker, full_speech))
-            full_speech = ''
-            season, episode, speaker, speech_so_far = '', '', '', ''
-        else:  # we have another line of the speech; add it to speech
-            full_speech += speech_so_far if not full_speech else ' ' + speech_so_far
-    return good_lines
-
-
-def clean_up_line(line):
-    ret_line = ''
-    for c in line:
-        if c in string.ascii_letters or c in string.whitespace:  # or c == '-'
-            ret_line += c
-        elif c == '-':  # NEW
-            # ret_line += ' '  # NEW
-            continue
-        elif c == '&':
-            ret_line += 'and'
-        else:
-            continue
-    return ret_line
-
-
-def line_to_list_of_words(line):
-    matches = re.findall(r'([a-zA-Z\']+)', line)
-    return matches
-
-
 def get_num_words_spoken_by_character_per_episode(content):
     """Receives loaded csv content (str) and returns a dict of
        keys=characters and values=Counter object,
        which is a mapping of episode=>words spoken"""
+    content_lines = content.split('\n')  # a list of str
+    content_reader = csv.DictReader(content_lines)
 
-    content_lines = content.split('\n')[1:]
+    print(f'The type of constant_reader is {type(content_reader)}.')
+    # print(f'The keys of constant_reader are {content_reader.keys()}')
 
-    formatted_content = format_content_lines(content_lines)
-
-    character_dict = defaultdict(Counter)
-
-    for line in formatted_content:
-        season, episode, speaker, speech = line
-        speech = clean_up_line(speech)
-        speech_words_list = line_to_list_of_words(speech)
-        character_dict[speaker].update({episode: len(speech_words_list)})
-        if (season, episode, speaker) == ('1', '4', 'Stan'):
-            print(speech, ' | ', len(speech_words_list))
-    return character_dict
+    i = 0
+    for line in content_reader:
+        character_dict = defaultdict(Counter)
+        line["Character"] = defaultdict(Counter)
+        line["Character"][line["Episode"]] = len(line["Line"].split())
+        print(f'Season: {line["Season"]}   Episode: {line["Episode"]}   '
+              f'Character: {line["Character"]}   Line: {line["Line"]}')
+        i += 1
+        if i >= 3:
+            break
 
 
 if __name__ == '__main__':
     get_num_words_spoken_by_character_per_episode(get_season_csv_file(1))
+
+
+    # formatted_content = format_content_lines(content_lines)
+
+
+"""
+              {'Agent 1': Counter({'8': 48, '2': 1}),
+...
+# Counter k,v here = (episode, # number of words spoken)
+...
+               'Anthropologist': Counter({'12': 101}),
+...
+               'Cartman': Counter({'1': 735,
+                                   '10': 669,
+                                   '13': 621,
+... etc ...
+"""
