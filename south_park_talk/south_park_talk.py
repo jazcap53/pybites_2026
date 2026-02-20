@@ -20,21 +20,10 @@ def get_num_words_spoken_by_character_per_episode(content):
        which is a mapping of episode=>words spoken"""
     content_lines = content.split('\n')  # a list of str
     content_reader = csv.DictReader(content_lines)
-
-    print(f'The type of constant_reader is {type(content_reader)}.')
-    # print(f'The keys of constant_reader are {content_reader.keys()}')
-
-    i = 0
+    character_dict = defaultdict(Counter)
     for line in content_reader:
-        character_dict = defaultdict(Counter)
-        line["Character"] = defaultdict(Counter)
-        line["Character"][line["Episode"]] = len(line["Line"].split())
-        print(f'Season: {line["Season"]}   Episode: {line["Episode"]}   '
-              f'Character: {line["Character"]}   Line: {line["Line"]}')
-        i += 1
-        if i >= 3:
-            break
-
+        character_dict[line["Character"]][line["Episode"]] += len(line["Line"].split())
+    return character_dict
 
 if __name__ == '__main__':
     get_num_words_spoken_by_character_per_episode(get_season_csv_file(1))
