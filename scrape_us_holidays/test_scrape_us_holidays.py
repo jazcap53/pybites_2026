@@ -1,6 +1,6 @@
 import pytest
 
-from holidays import get_us_bank_holidays
+from scrape_us_holidays import get_us_bank_holidays
 
 
 holidays = get_us_bank_holidays()
