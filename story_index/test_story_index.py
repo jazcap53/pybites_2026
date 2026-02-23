@@ -1,4 +1,4 @@
-from rrhood import make_character_index
+from story_index import make_character_index
 
 
 the_neetle_tree = """

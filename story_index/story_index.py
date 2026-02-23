@@ -44,6 +44,10 @@ Little Red Riding Hood and her Grandmother had a nice lunch and a long chat.
 """
 
 
+# call this for each line in the text
+def _scan_line(line, characters):
+    pass
+
 def make_character_index(text=text, characters=CHARACTERS):
     """Return a dict with keys are characters (lowercased) and values
        the lines they appear in sorted order.
@@ -52,4 +56,11 @@ def make_character_index(text=text, characters=CHARACTERS):
        - e.g. ('Grandmother', 'Grandma', 'Granny') -
        then return the former as key.
     """
-    pass
+    text_lines = text.lower().split('\n')
+
+    for line_num, line in enumerate(text_lines):
+        print(f'{line_num}: {line}')
+
+
+if __name__ == '__main__':
+    make_character_index()
