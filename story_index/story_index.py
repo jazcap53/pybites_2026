@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 CHARACTERS = ['Red Riding Hood',
               # we're omitting 'mother' here for simplicity
               # (= substring grandmother)
@@ -43,10 +45,29 @@ The woodsman knocked out the wolf and carried him deep into the forest where he 
 Little Red Riding Hood and her Grandmother had a nice lunch and a long chat.
 """
 
+def _outer_scan_line(line, line_num, characters):
+    return_dict = defaultdict(list)
 
-# call this for each line in the text
-def _scan_line(line, characters):
-    pass
+    for character in characters:
+        if len(character[0]) == 1:
+            if _inner_scan_line(line, line_num, character):
+                return_dict[character].append(line_num)
+        else:
+            name = character[0]
+            for i in range(len(character)):
+                if _inner_scan_line(line, line_num, character[i]):
+                    return_dict[name].append(line_num)
+                    break
+    return return_dict
+
+
+
+# scan exactly one line for exactly one name
+def _inner_scan_line(line, line_num, name):
+    if name in line:
+        return True
+    return False
+
 
 def make_character_index(text=text, characters=CHARACTERS):
     """Return a dict with keys are characters (lowercased) and values
@@ -60,6 +81,10 @@ def make_character_index(text=text, characters=CHARACTERS):
 
     for line_num, line in enumerate(text_lines):
         print(f'{line_num}: {line}')
+
+    character_index = defaultdict(list)
+
+
 
 
 if __name__ == '__main__':
