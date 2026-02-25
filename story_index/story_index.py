@@ -45,17 +45,18 @@ The woodsman knocked out the wolf and carried him deep into the forest where he 
 Little Red Riding Hood and her Grandmother had a nice lunch and a long chat.
 """
 
+# scan a single line for a character and its synonyms if any
 def _outer_scan_line(line, line_num, characters):
     return_dict = defaultdict(list)
 
     for character in characters:
-        if len(character[0]) == 1:
-            if _inner_scan_line(line, line_num, character):
+        if len(character[0]) == 1:  # character is a str
+            if _inner_scan_line(line, character):
                 return_dict[character].append(line_num)
-        else:
+        else:  # character is a tuple
             name = character[0]
             for i in range(len(character)):
-                if _inner_scan_line(line, line_num, character[i]):
+                if _inner_scan_line(line, character[i]):
                     return_dict[name].append(line_num)
                     break
     return return_dict
@@ -63,10 +64,8 @@ def _outer_scan_line(line, line_num, characters):
 
 
 # scan exactly one line for exactly one name
-def _inner_scan_line(line, line_num, name):
-    if name in line:
-        return True
-    return False
+def _inner_scan_line(line, name):
+    return name in line
 
 
 def make_character_index(text=text, characters=CHARACTERS):
@@ -79,10 +78,36 @@ def make_character_index(text=text, characters=CHARACTERS):
     """
     text_lines = text.lower().split('\n')
 
-    for line_num, line in enumerate(text_lines):
-        print(f'{line_num}: {line}')
+    result_dd = defaultdict(list)
 
-    character_index = defaultdict(list)
+    # 1. for each character (may be a tuple)
+    # 2.     send character and text_lines to foo()
+    # 3.     in foo()
+    # 3b.        set return_list to []
+    # 4.         determine if character is a str or a tuple
+    # 5.         if it's a tuple
+    # 5b.            set found to False
+    # 5c.            for char_name_ix and char_name in enum character
+    # 6.                 send a char_name and a text line to baz()
+    # 7.                 in baz()
+    # 8.                     return char_name in the text line
+    # 9.                 set found to return value of baz()
+    # 10.                if found
+    # 10a.                   append char_name_ix to return_List
+    #                        set found to False
+    #                        break
+    # 10b.               else
+    # 10c.                   call baz() again with the next char_name
+    # 11.  NOTE: THIS PSEUDOCODE ISN'T QUITE RIGHT
+
+
+    character_index_left = defaultdict(list)
+    for line_num, line in enumerate(text_lines):
+        character_index_right = _outer_scan_line(line, line_num, characters)
+
+
+
+
 
 
 
