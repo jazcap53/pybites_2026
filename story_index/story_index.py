@@ -6,6 +6,11 @@ CHARACTERS = ['Red Riding Hood',
               ('Grandmother', 'Grandma', 'Granny'),
               'wolf', 'woodsman']
 
+CHARACTERS_NO_TUPLES =  ['Red Riding Hood',
+                       'Grandmother',
+                       'wolf',
+                       'woodsman']
+
 text = """
 Once upon a time, there was a little girl who lived in a village near the forest.  Whenever she went out, the little girl wore a red riding cloak, so everyone in the village called her Little Red Riding Hood.
 One morning, Little Red Riding Hood asked her mother if she could go to visit her grandmother as it had been awhile since they'd seen each other.
@@ -44,28 +49,17 @@ He grabbed the wolf and made him spit out the poor Grandmother who was a bit fra
 The woodsman knocked out the wolf and carried him deep into the forest where he wouldn't bother people any longer.
 Little Red Riding Hood and her Grandmother had a nice lunch and a long chat.
 """
-
-# scan a single line for a character and its synonyms if any
-def _outer_scan_line(line, line_num, characters):
-    return_dict = defaultdict(list)
-
-    for character in characters:
-        if len(character[0]) == 1:  # character is a str
-            if _inner_scan_line(line, character):
-                return_dict[character].append(line_num)
-        else:  # character is a tuple
-            name = character[0]
-            for i in range(len(character)):
-                if _inner_scan_line(line, character[i]):
-                    return_dict[name].append(line_num)
-                    break
-    return return_dict
+# scan each line of text for character
+# TODO: handle newlines correctly, handle case correctly
+def _scan_all_text_one_name(text, character):
+    text_ix_list = []
+    for text_ix, text_line in enumerate(text):
+        text_line = text_line.strip()
+        if character.lower() in text_line.lower():
+            text_ix_list.append(text_ix)
+    return text_ix_list
 
 
-
-# scan exactly one line for exactly one name
-def _inner_scan_line(line, name):
-    return name in line
 
 
 def make_character_index(text=text, characters=CHARACTERS):
@@ -80,37 +74,17 @@ def make_character_index(text=text, characters=CHARACTERS):
 
     result_dd = defaultdict(list)
 
-    # 1. for each character (may be a tuple)
-    # 2.     send character and text_lines to foo()
-    # 3.     in foo()
-    # 3b.        set return_list to []
-    # 4.         determine if character is a str or a tuple
-    # 5.         if it's a tuple
-    # 5b.            set found to False
-    # 5c.            for char_name_ix and char_name in enum character
-    # 6.                 send a char_name and a text line to baz()
-    # 7.                 in baz()
-    # 8.                     return char_name in the text line
-    # 9.                 set found to return value of baz()
-    # 10.                if found
-    # 10a.                   append char_name_ix to return_List
-    #                        set found to False
-    #                        break
-    # 10b.               else
-    # 10c.                   call baz() again with the next char_name
-    # 11.  NOTE: THIS PSEUDOCODE ISN'T QUITE RIGHT
+    for character in characters:
+        result_dd[character] = _scan_all_text_one_name(text.lower(), character.lower())
 
+    return result_dd
 
-    character_index_left = defaultdict(list)
-    for line_num, line in enumerate(text_lines):
-        character_index_right = _outer_scan_line(line, line_num, characters)
-
-
-
-
-
-
+    # I:     send one character (non-tuple) and text_lines to foo()
+    # II:    foo() checks each line in turn for character
+    # III:   if character is in line, append line index to return list
+    # IV:    foo() returns the return list
+    # V:     make_character_index() sets result_dd[character] = returned list
 
 
 if __name__ == '__main__':
-    make_character_index()
+    print(make_character_index(text, CHARACTERS_NO_TUPLES))
