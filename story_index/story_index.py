@@ -59,6 +59,10 @@ def _scan_all_text_one_name(text, character):
     return text_ix_list
 
 
+def _scan_all_text_multiple_names(text, characters):
+    pass
+
+
 def make_character_index(text=text, characters=CHARACTERS):
     """Return a dict with keys are characters (lowercased) and values
        the lines they appear in sorted order.
@@ -72,8 +76,11 @@ def make_character_index(text=text, characters=CHARACTERS):
     result_dd = defaultdict(list)
 
     for character in characters:
-        result_dd[character] = _scan_all_text_one_name(text_lines, character.lower())
-
+        if len(character[0]) == 1:
+            result_dd[character] = _scan_all_text_one_name(text_lines, character.lower())
+        else:
+            found = False
+            result_dd[character] = _scan_all_text_multiple_names(text_lines, character)
     return result_dd
 
     # I:     send one character (non-tuple) and text_lines to foo()
@@ -84,4 +91,4 @@ def make_character_index(text=text, characters=CHARACTERS):
 
 
 if __name__ == '__main__':
-    print(make_character_index(text, CHARACTERS_NO_TUPLES))
+    print(make_character_index())
