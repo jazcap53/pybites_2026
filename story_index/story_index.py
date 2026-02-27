@@ -60,7 +60,11 @@ def _scan_all_text_one_name(text, character):
 
 
 def _scan_all_text_multiple_names(text, characters):
-    pass
+    text_ix_list = []
+    index_name = characters[0]
+    for name in characters:
+        name = name.lower()
+    # TODO: finish this function
 
 
 def make_character_index(text=text, characters=CHARACTERS):
@@ -77,7 +81,8 @@ def make_character_index(text=text, characters=CHARACTERS):
 
     for character in characters:
         if len(character[0]) == 1:
-            result_dd[character] = _scan_all_text_one_name(text_lines, character.lower())
+            character = character.lower()
+            result_dd[character] = _scan_all_text_one_name(text_lines, character)
         else:
             found = False
             result_dd[character] = _scan_all_text_multiple_names(text_lines, character)
