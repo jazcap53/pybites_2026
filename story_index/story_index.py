@@ -54,12 +54,9 @@ Little Red Riding Hood and her Grandmother had a nice lunch and a long chat.
 def _scan_all_text_one_name(text, character):
     text_ix_list = []
     for text_ix, text_line in enumerate(text):
-        text_line = text_line.strip()
-        if character.lower() in text_line.lower():
+        if character in text_line:
             text_ix_list.append(text_ix)
     return text_ix_list
-
-
 
 
 def make_character_index(text=text, characters=CHARACTERS):
@@ -70,12 +67,12 @@ def make_character_index(text=text, characters=CHARACTERS):
        - e.g. ('Grandmother', 'Grandma', 'Granny') -
        then return the former as key.
     """
-    text_lines = text.lower().split('\n')
+    text_lines = text.strip().lower().split('\n')
 
     result_dd = defaultdict(list)
 
     for character in characters:
-        result_dd[character] = _scan_all_text_one_name(text.lower(), character.lower())
+        result_dd[character] = _scan_all_text_one_name(text_lines, character.lower())
 
     return result_dd
 
