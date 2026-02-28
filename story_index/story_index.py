@@ -50,22 +50,12 @@ The woodsman knocked out the wolf and carried him deep into the forest where he 
 Little Red Riding Hood and her Grandmother had a nice lunch and a long chat.
 """
 # scan each line of text for character
-# TODO: handle newlines correctly, handle case correctly
 def _scan_all_text_one_name(text, character):
     text_ix_list = []
     for text_ix, text_line in enumerate(text):
         if character in text_line:
-            text_ix_list.append(text_ix)
+            text_ix_list.append(text_ix + 1)  # +1 for 1-based index
     return text_ix_list
-
-
-def _scan_all_text_multiple_names(text, character):
-    text_ix_list = []
-    for name in character:
-        name = name.lower()
-        text_ix_list += _scan_all_text_one_name(text, name)
-    return sorted(text_ix_list)
-
 
 
 def make_character_index(text=text, characters=CHARACTERS):
@@ -85,7 +75,9 @@ def make_character_index(text=text, characters=CHARACTERS):
             character = character.lower()
             result_dd[character] = _scan_all_text_one_name(text_lines, character)
         else:
-            result_dd[character[0].lower()] = _scan_all_text_multiple_names(text_lines, character)
+            character_list = [c.lower() for c in list(character)]
+            for name in character_list:
+                result_dd[character_list[0]] += _scan_all_text_one_name(text_lines, name)
     return result_dd
 
 
