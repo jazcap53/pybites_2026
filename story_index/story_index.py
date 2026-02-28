@@ -59,12 +59,13 @@ def _scan_all_text_one_name(text, character):
     return text_ix_list
 
 
-def _scan_all_text_multiple_names(text, characters):
+def _scan_all_text_multiple_names(text, character):
     text_ix_list = []
-    index_name = characters[0]
-    for name in characters:
+    for name in character:
         name = name.lower()
-    # TODO: finish this function
+        text_ix_list += _scan_all_text_one_name(text, name)
+    return sorted(text_ix_list)
+
 
 
 def make_character_index(text=text, characters=CHARACTERS):
@@ -84,15 +85,8 @@ def make_character_index(text=text, characters=CHARACTERS):
             character = character.lower()
             result_dd[character] = _scan_all_text_one_name(text_lines, character)
         else:
-            found = False
-            result_dd[character] = _scan_all_text_multiple_names(text_lines, character)
+            result_dd[character[0].lower()] = _scan_all_text_multiple_names(text_lines, character)
     return result_dd
-
-    # I:     send one character (non-tuple) and text_lines to foo()
-    # II:    foo() checks each line in turn for character
-    # III:   if character is in line, append line index to return list
-    # IV:    foo() returns the return list
-    # V:     make_character_index() sets result_dd[character] = returned list
 
 
 if __name__ == '__main__':
