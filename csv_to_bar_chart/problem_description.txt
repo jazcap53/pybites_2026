@@ -1,0 +1,23 @@
+ Parse a csv file and create a bar chart
+Pybites
+Intermediate +3 pts
+Data Formats
+7/17
+
+Update: if you wonder about Slack, we've moved to Circle since, but that does not affect this Bite though.
+
+We played a bit with the Slack API the other day and wow: our Pybites community is super international! We really enjoy connecting with Pythonistas from all over the globe.
+
+We put some anonymized data in a csv (using uuid4 and faker) and for this Bite we ask you to use requests to load it in, use the csv module to parse it into a data structure of your choice, and finally print the following output to the screen:
+
+Africa/Algiers       | ++
+Africa/Cairo         | +
+Africa/Monrovia      | +
+Africa/Nairobi       | ++++
+...
+...
+Europe/Moscow        | ++
+Europe/Warsaw        | ++
+Pacific/Honolulu     | +
+
+See the full output under the TESTS tab. Good luck and remember: keep calm and code in Python!
