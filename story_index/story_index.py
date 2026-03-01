@@ -78,7 +78,9 @@ def make_character_index(text=text, characters=CHARACTERS):
             character_list = [c.lower() for c in list(character)]
             for name in character_list:
                 result_dd[character_list[0]] += _scan_all_text_one_name(text_lines, name)
-    return result_dd
+            # eliminate duplicate ix's, sort, and assign
+            result_dd[character_list[0]] = sorted(list(set(result_dd[character_list[0]])))
+    return dict(result_dd)
 
 
 if __name__ == '__main__':
