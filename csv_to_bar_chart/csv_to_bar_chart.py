@@ -24,11 +24,11 @@ def create_user_bar_chart(content):
     longest = len(max(content.keys(), key=len))
     content = sorted(content.items(), key=lambda i: i[0])
     for item in content:
-        item_f_str = f"{item[0]:{longest}} | {item[1]}"
+        item_f_str = f"{item[0]:{longest}} | {item[1]*'+'}"
         # print(item[0] + (longest-len(item[0]))*' ' +' | ' + item[1]*'+')
         print(item_f_str)
 
 
-if __name__ == '__main__':
-    content = get_csv()
-    create_user_bar_chart(content)
+# if __name__ == '__main__':
+#     content = get_csv()
+#     create_user_bar_chart(content)
