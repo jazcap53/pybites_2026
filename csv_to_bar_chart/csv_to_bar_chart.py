@@ -21,11 +21,14 @@ def create_user_bar_chart(content):
     """Receives csv file (decoded) content and print a table of timezones
        and their corresponding member counts in pluses to standard output
     """
-    pass
+    longest = len(max(content.keys(), key=len))
+    content = sorted(content.items(), key=lambda i: i[0])
+    for item in content:
+        item_f_str = f"{item[0]:{longest}} | {item[1]}"
+        # print(item[0] + (longest-len(item[0]))*' ' +' | ' + item[1]*'+')
+        print(item_f_str)
 
 
 if __name__ == '__main__':
-    contents = get_csv()
-    print(contents)
-    longest = max(contents.keys(), key=len)
-    print(f'length of longest key {longest} is {len(longest)}')
+    content = get_csv()
+    create_user_bar_chart(content)
