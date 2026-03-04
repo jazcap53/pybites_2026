@@ -1,3 +1,4 @@
+import csv
 import json
 import re
 
@@ -14,12 +15,14 @@ id,first_name,last_name,email
 9,Alphonso,Berwick|aberwick8@symantec.com
 10,Wyn;Serginson,wserginson9@naver.com
 """
-
-
 def convert_to_json(members=members):
-    list_in = members.split('\n')[1:]
-    for item in list_in:
-        list_out = [','.join(re.split(',;|', member)) for member in members]
-    # for line in members:
-    #     line = ','.join(re.split(',;|', line))
-    return json.dumps(list_out)
+    members = members.replace(';', ',').replace('|', ',')
+    members_list = members.split('\n')[1:-1]
+    member_reader = csv.DictReader(members_list)
+    list_out = [item for item in member_reader]
+    json_out = json.dumps(list_out)
+    return json_out
+
+
+if __name__ == '__main__':
+    convert_to_json()
