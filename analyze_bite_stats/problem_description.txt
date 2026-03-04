@@ -7,6 +7,8 @@ bite,user,completed
 29,emilham4,False
 9,mfilshin6,False
 
-Load in the data using csv's awesome DictReader storing the result in self.rows in the constructor (__init__). Next finish the 6 defined @property methods using the loaded in data. Each property returns a single value. Check out the docstrings and tests for more info.
+Load in the data using csv's awesome DictReader storing the result in self.rows in the constructor (__init__).
+Next finish the 6 defined @property methods using the loaded in data. Each property returns a single value.
+Check out the docstrings and tests for more info.
 
 Good luck and keep calm and code in Python!
