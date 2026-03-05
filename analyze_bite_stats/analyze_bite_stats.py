@@ -22,20 +22,17 @@ class BiteStats:
     @property
     def number_bites_accessed(self) -> int:
         """Get the number of unique Bites accessed"""
-        accessed = set()
-        for row in self.rows:
-            accessed.add(row['bite'])
-        return len(accessed)
+        return len(set(row['bite'] for row in self.rows))
 
     @property
     def number_bites_resolved(self) -> int:
         """Get the number of unique Bites resolved (completed=True)"""
-        pass
+        return len(set(row['bite'] for row in self.rows if row['completed'] == 'True'))
 
     @property
     def number_users_active(self) -> int:
         """Get the number of unique users in the data set"""
-        pass
+        return len(set(row['user'] for row in self.rows))
 
     @property
     def number_users_solving_bites(self) -> int:
@@ -57,4 +54,4 @@ class BiteStats:
 
 if __name__ == '__main__':
     bs = BiteStats()
-    _ = bs.number_bites_accessed
+    print(bs.rows[0])
