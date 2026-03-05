@@ -1,5 +1,5 @@
+from collections import Counter
 import csv
-# from csv import DictReader
 import os
 from urllib.request import urlretrieve
 
@@ -38,18 +38,20 @@ class BiteStats:
     def number_users_solving_bites(self) -> int:
         """Get the number of unique users that resolved
            one or more Bites"""
-        pass
+        return len(set(row['user'] for row in self.rows if row['completed'] == 'True'))
 
     @property
     def top_bite_by_number_of_clicks(self) -> str:
         """Get the Bite that got accessed the most
            (= in most rows)"""
-        pass
+        ctr = Counter(row['bite'] for row in self.rows)
+        return ctr.most_common(1)[0][0]
 
     @property
     def top_user_by_bites_completed(self) -> str:
         """Get the user that completed the most Bites"""
-        pass
+        ctr = Counter(row['user'] for row in self.rows if row['completed'] == 'True')
+        return ctr.most_common(1)[0][0]
 
 
 if __name__ == '__main__':
