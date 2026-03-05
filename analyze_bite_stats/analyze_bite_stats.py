@@ -1,4 +1,5 @@
-from csv import DictReader
+import csv
+# from csv import DictReader
 import os
 from urllib.request import urlretrieve
 
@@ -14,12 +15,17 @@ class BiteStats:
 
     def __init__(self, data=DATA):
         self.rows = []
-        # you code ...
+        with open(data) as logfile:
+            for log_item in csv.DictReader(logfile):  # each item in self.logs is a dict
+                self.rows.append(log_item)
 
     @property
     def number_bites_accessed(self) -> int:
         """Get the number of unique Bites accessed"""
-        pass
+        accessed = set()
+        for row in self.rows:
+            accessed.add(row['bite'])
+        return len(accessed)
 
     @property
     def number_bites_resolved(self) -> int:
@@ -47,3 +53,8 @@ class BiteStats:
     def top_user_by_bites_completed(self) -> str:
         """Get the user that completed the most Bites"""
         pass
+
+
+if __name__ == '__main__':
+    bs = BiteStats()
+    _ = bs.number_bites_accessed

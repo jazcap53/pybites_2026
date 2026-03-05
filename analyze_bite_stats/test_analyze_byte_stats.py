@@ -1,6 +1,6 @@
 import pytest
 
-from stats import BiteStats
+from analyze_bite_stats import BiteStats
 
 
 @pytest.fixture(scope="module")
