@@ -25,18 +25,12 @@ def get_income_distribution(xml=countries):
     """
     latin_dd = defaultdict(list)
 
-    with open(xml) as xml_file:
-        xml_data = xml_file.read()
-    root = ET.fromstring(xml_data)
-    print(root.tag)
-    print(root.attrib)
+    tree = ET.parse(xml)
+    root = tree.getroot()
     for child in root:
-        print(child.attrib)
-        print(child[1].text)
-        print(child[4].text)
-
-
+        latin_dd[child[4].text].append(child[1].text)
+    return latin_dd
 
 
 if __name__ == '__main__':
-    get_income_distribution()
+    print(get_income_distribution())
