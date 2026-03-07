@@ -1,6 +1,6 @@
 import pytest
 
-from income import get_income_distribution
+from latin_america_income import get_income_distribution
 
 EXPECTED = {'High income': ['Aruba',
                             'Argentina',
