@@ -63,21 +63,25 @@ def player_with_max_points_per_game():
 
 def number_of_players_from_duke():
     """Return the number of players with college == Duke University"""
-    pass
+    res = cur.execute('''SELECT count(*) FROM players p WHERE p.college = "Duke University"''')
+    return res.fetchone()[0]
 
 
 def avg_years_active_players_stanford():
     """Return the average years that players from "Stanford University
        are active ("active" column)"""
-    pass
-
+    # res = cur.execute('''SELECT avg(CAST(p.active AS NUMERIC)) FROM players p WHERE p.college = "Stanford University"''')
+    res = cur.execute('''SELECT round(avg(CAST(p.active AS NUMERIC)), 2) 
+                         from players p where p.college = "Stanford University"''')
+    return res.fetchone()[0]
 
 def year_with_most_new_players():
     """Return the year with the most new players.
        Hint: you can use GROUP BY on the year column.
     """
-    pass
-
+    res = cur.execute('''SELECT CAST(p.year AS NUMERIC) FROM players p GROUP BY p.year ORDER BY count(*) DESC''')
+    return res.fetchone()[0]
 
 if __name__ == '__main__':
     print(player_with_max_points_per_game())
+    year_with_most_new_players()
