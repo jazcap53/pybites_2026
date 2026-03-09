@@ -17,7 +17,21 @@ def get_most_complex_bites(N=10, stats=stats):
        Return a list of Bite IDs (int or str values are fine) of the N
        most complex Bites.
     """
-    pass
+    rating_list = []
+    with open(stats, newline='', encoding='utf-8-sig') as infile:
+        reader = csv.reader(infile, delimiter=';')
+        for line in reader:
+            if line[0] == 'Bite' or line[1] == 'None':
+                continue
+            # print(line)
+            dot_is_at = line[0].lstrip().find('.')
+            bite_num = int(line[0][5:dot_is_at])
+            diff_rating = float(line[1])
+            rating_list.append((bite_num, diff_rating))
+        rating_list.sort(key=lambda item: item[1])
+        top_ratings = [item[0] for item in rating_list]
+        return top_ratings[-N:]
+
 
 
 if __name__ == '__main__':

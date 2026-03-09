@@ -3,7 +3,7 @@ from tempfile import TemporaryDirectory
 
 import pytest
 
-from bites import get_most_complex_bites, TMP
+from bite_stats_ii import get_most_complex_bites, TMP
 
 BITES_CSV = TMP / 'intro_bites.csv'
 INTRO_BITE_STATS = """Bite;Difficulty

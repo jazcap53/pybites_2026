@@ -23,6 +23,7 @@ Complete the get_most_complex_bites function below following its docstring.
 
 Your code will be tested calling your function with different arguments.
 
-Update: some folks reported hitting a UTF-8 BOM error. In that case use encoding="utf-8-sig" when opening the csv file.
+Update: some folks reported hitting a UTF-8 BOM error. In that case use encoding="utf-8-sig" when opening
+the csv file.
 
 Have fun and keep calm and code in Python!
