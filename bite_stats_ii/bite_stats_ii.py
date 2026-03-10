@@ -24,13 +24,14 @@ def get_most_complex_bites(N=10, stats=stats):
             if line[0] == 'Bite' or line[1] == 'None':
                 continue
             # print(line)
-            dot_is_at = line[0].lstrip().find('.')
+            line[0] = line[0].lstrip()
+            dot_is_at = line[0].find('.')
             bite_num = int(line[0][5:dot_is_at])
             diff_rating = float(line[1])
             rating_list.append((bite_num, diff_rating))
         rating_list.sort(key=lambda item: item[1])
         top_ratings = [item[0] for item in rating_list]
-        return top_ratings[-N:]
+        return reversed(top_ratings[-N:])
 
 
 
