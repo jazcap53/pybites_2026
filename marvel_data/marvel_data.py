@@ -66,6 +66,12 @@ def most_popular_characters(
     Returns:
         list[str]: A list of names of the top `n` most popular characters.
     """
+    popular_chars = Counter()
+    for character in characters:
+        popular_chars[(character.pid, character.name)] += \
+            int(character.appearances) if character.appearances else 0
+    top_names = [char[0][1] for char in popular_chars.most_common(top)]
+    return top_names
 
 
 def max_and_min_years_new_characters(
@@ -95,3 +101,6 @@ def get_percentage_female_characters(characters: list[Character] = characters) -
     Returns:
         float: The percentage of female characters, rounded to two decimal places.
     """
+
+
+print(most_popular_characters())

@@ -1,4 +1,4 @@
-from marvel import (characters,
+from marvel_data import (characters,
                     most_popular_characters,
                     max_and_min_years_new_characters,
                     get_percentage_female_characters)
