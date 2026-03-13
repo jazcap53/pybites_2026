@@ -88,6 +88,19 @@ def max_and_min_years_new_characters(
     Returns:
         tuple[str, str]: A tuple containing the year with the most and the year with the least new characters.
     """
+    debut_chars = Counter()
+    for character in characters:
+        debut_chars[character.year] += 1
+    year_counts = debut_chars.most_common()
+    max_year = ''
+    for ix, yr_cnt in enumerate(year_counts):
+        if yr_cnt[0] == '':
+            continue
+        max_year = yr_cnt[0]
+        if year_counts[ix + 1][0] > max_year:
+            break
+        # max_year = yr_cnt[ix][0]
+    return max_year, year_counts[-1][0]
 
 
 def get_percentage_female_characters(characters: list[Character] = characters) -> float:
@@ -104,3 +117,4 @@ def get_percentage_female_characters(characters: list[Character] = characters) -
 
 
 print(most_popular_characters())
+print(max_and_min_years_new_characters())
