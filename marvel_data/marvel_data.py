@@ -99,7 +99,6 @@ def max_and_min_years_new_characters(
         max_year = yr_cnt[0]
         if year_counts[ix + 1][0] > max_year:
             break
-        # max_year = yr_cnt[ix][0]
     return max_year, year_counts[-1][0]
 
 
@@ -114,7 +113,18 @@ def get_percentage_female_characters(characters: list[Character] = characters) -
     Returns:
         float: The percentage of female characters, rounded to two decimal places.
     """
+    female_count = 0
+    male_count = 0
+    empty_count = 0
+    other_count = 0
+    for character in characters:
+        if not character.sex:
+            empty_count += 1
+        elif character.sex.lower().startswith('female'):
+            female_count += 1
+        elif character.sex.lower().startswith('male'):
+            male_count += 1
+        else:
+            other_count += 1
 
-
-print(most_popular_characters())
-print(max_and_min_years_new_characters())
+    return round(female_count * 100.0 / (female_count + male_count + other_count), 2)
