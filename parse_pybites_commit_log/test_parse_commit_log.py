@@ -1,6 +1,6 @@
 import pytest
 
-from commits import get_min_max_amount_of_commits
+from parse_commit_log import get_min_max_amount_of_commits
 
 
 @pytest.mark.parametrize('year, expected', [

@@ -23,6 +23,15 @@ def get_min_max_amount_of_commits(
 
     Returns a tuple of (least_active_month, most_active_month)
     """
+    # for line in commit_log.split('\n'):
+    #     print(line)
+    with open(commit_log) as logg:
+        for line in logg.readlines()[:5]:
+            line_list = line.rstrip('\n').split('|')
+            print(line_list[0][12:])
+            print(line_list[1])
+            parsed_val = parse(line_list[0][12:])  # , YEAR_MONTH)
+            print(parsed_val)
 
 
 if __name__ == "__main__":
