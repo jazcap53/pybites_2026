@@ -12,13 +12,14 @@ YEAR_MONTH = "{y}-{m:02d}"
 
 
 def parse_changes(changes: str):
-    print(changes)
-    change_line = changes.split(', ')
-    ct_insertions, ct_deletions = change_count(change_line[1]), change_count(change_line[2])
+    change_line = changes.split(',')
+    ct_insertions = change_count(change_line[1])
+    ct_deletions = change_count(change_line[2], False) if len(change_line) > 2 else 0
     return ct_insertions + ct_deletions
 
 
-def change_count(segment: str):
+def change_count(segment: str, insertions:bool =True):
+    segment = segment.lstrip()
     ret = int(segment[0])
     for i in range(1, len(segment)):
         if not isdigit(segment[i]):
@@ -39,17 +40,13 @@ def get_min_max_amount_of_commits(
 
     Returns a tuple of (least_active_month, most_active_month)
     """
-    # for line in commit_log.split('\n'):
-    #     print(line)
     ctr = Counter()
     with open(commit_log) as logfile:
-        for line in logfile.readlines()[:5]:
+        for line in logfile.readlines():
             line_list = line.rstrip('\n').split('|')
             dt_parsed = parse(line_list[0], fuzzy=True)
             if year is not None and dt_parsed.year != year:
                 continue
-            ctr[(dt_parsed.year, dt_parsed.month)] += parse_changes(line_list[1])
-    return ctr.most_common()[0][0], ctr.most_common()[-1][0]
-
-if __name__ == "__main__":
-    print(get_min_max_amount_of_commits())
+            ctr_key = f'{dt_parsed.year:4d}-{dt_parsed.month:02d}'
+            ctr[ctr_key] += parse_changes(line_list[1])
+    return ctr.most_common()[-1][0], ctr.most_common()[0][0]
