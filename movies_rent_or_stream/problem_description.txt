@@ -1,0 +1,34 @@
+You're on a movie budget so you want to evaluate if streaming movies could be more economical than
+renting them.
+
+For exercise sake we are going to assume that all movies you rent would be equally available on a single streaming
+service that has a fixed cost of 12/mo (STREAMING_COST_PER_MONTH, to keep it simple we stick with ints for movie
+prices in this exercise).
+
+In this Bite you will code the rent_or_stream function:
+
+- It receives renting_history which is a sequence of MovieRented namedtuples, each one representing a record of
+a movie rented at a certain date for a certain price.
+
+- Loop through those movies and return a dict of keys = months (format: YYYY-MM), and values = 'rent' or 'stream'
+based on what is cheaper (= total money spent on renting movies that month being less than the fixed
+STREAMING_COST_PER_MONTH).
+
+Here is a quick demo how this function should work:
+
+>>> from datetime import date
+>>> from movie_budget import rent_or_stream, MovieRented
+>>> renting_history = [
+...     MovieRented('Sonic', 10, date(2020, 11, 4)),
+...     MovieRented('Die Hard', 3, date(2020, 11, 3))
+... ]
+>>> rent_or_stream(renting_history)
+{'2020-11': 'stream'}  # 13 > 12
+>>> renting_history = [
+...     MovieRented('Breach', 7, date(2020, 12, 1)),
+...     MovieRented('Love and Monsters', 5, date(2020, 12, 9))
+... ]
+>>> rent_or_stream(renting_history)
+{'2020-12': 'rent'}  # 12 >= 12
+
+Have fun and keep calm and code in Python 🐍
