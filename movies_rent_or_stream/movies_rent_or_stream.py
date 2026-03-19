@@ -1,3 +1,4 @@
+from collections import defaultdict
 from datetime import date
 from typing import Dict, Sequence, NamedTuple
 
@@ -11,6 +12,10 @@ class MovieRented(NamedTuple):
 RentingHistory = Sequence[MovieRented]
 STREAMING_COST_PER_MONTH = 12
 STREAM, RENT = 'stream', 'rent'
+
+
+def stringify(date):
+    return f'{date.year:4d}-{date.month:2d}'
 
 
 def rent_or_stream(
@@ -28,4 +33,13 @@ def rent_or_stream(
 
        Check out the tests for examples.
     """
-    pass
+    tally_dict = defaultdict(int)
+    for rental in renting_history:
+        tally_dict[stringify(rental.date)] += rental.price
+    result_dict = {}
+    for k in sorted(tally_dict.keys()):
+        if tally_dict[k] <= 12:
+            result_dict[k] = 'rent'
+        else:
+            result_dict[k] = 'stream'
+    return result_dict
