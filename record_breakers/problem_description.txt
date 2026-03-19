@@ -1,0 +1,30 @@
+The data for this challenge comes from a subset of The National Centers for Environmental Information (NCEI) Daily Global Historical Climatology Network (GHCN-Daily). The GHCN-Daily is comprised of daily climate records from thousands of land surface stations across the globe.
+
+Each row in the datafile corresponds to a single observation.
+
+The following variables are provided to you:
+
+    id : station identification code
+    date : date in YYYY-MM-DD format (e.g. 2012-01-24 = January 24, 2012)
+    element : indicator of element type
+        TMAX : Maximum temperature (tenths of degrees C)
+        TMIN : Minimum temperature (tenths of degrees C)
+    value : data value for element (tenths of degrees C)
+
+For this challenge, you must:
+
+    Familiarize yourself with the dataset, then determine every record high and record low temperatures by
+    day of the year and station over the period 2005-2014 i.e. the record high for Jan 01, Station 01, Station 02
+     ... Jan 02, Station 01, Station 02 etc.
+    For the 2015 data, extract any points (highs and lows), for which the ten year record (2005-2014) record
+    high or record low was broken in 2015.
+    Watch out for leap days (i.e. February 29th), it is reasonable to remove these points from the dataset for
+    the purpose of this challenge.
+    Finally, return a tuple with a namedtuple for the highest and lowest record breaking stations that include
+    its station ID, Date, and temperature Value in Celsius.
+
+Complete high_low_record_breakers_for_2015 following the instructions in its docstring. Also check out the tests
+that have to pass.
+
+The data you have been given is near Ann Arbor, Michigan, United States, and the stations the data comes from
+are shown on the map below:
