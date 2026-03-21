@@ -47,15 +47,18 @@ def high_low_record_breakers_for_2015():
        * Return those as STATION namedtuples, (high_2015, low_2015)
     """
     r = requests.get(f'{DATA_FILE}')
+    weather_data = pd.read_csv(DATA_FILE)
+    for i in range(1, len(weather_data)):
+        if i < 3:
+            print(weather_data.iloc[i])
+            print()
+        id = weather_data.iloc[i]['ID']
+        date = weather_data.iloc[i]['Date']
+        element = weather_data.iloc[i]['Element']
+        data_value = weather_data.iloc[i]['Data_Value']
 
-    weather_data = pd.DataFrame(r)
-    print(weather_data.index)
-    for i in range(1, 3):  # len(weather_data)):
-        print(weather_data.values[i])
-        print(type(weather_data.values[i]))
-
-
+    return 42
 
 
 if __name__ == '__main__':
-    high_low_record_breakers_for_2015()
+    print(high_low_record_breakers_for_2015())
