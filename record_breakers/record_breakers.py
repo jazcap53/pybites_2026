@@ -1,7 +1,13 @@
 from collections import namedtuple
 from datetime import date
+import os
+
 
 import pandas as pd
+import requests
+
+
+
 
 DATA_FILE = "https://bites-data.s3.us-east-2.amazonaws.com/weather-ann-arbor.csv"
 STATION = namedtuple("Station", "ID Date Value")
@@ -40,4 +46,16 @@ def high_low_record_breakers_for_2015():
        temperatures
        * Return those as STATION namedtuples, (high_2015, low_2015)
     """
-    pass
+    r = requests.get(f'{DATA_FILE}')
+
+    weather_data = pd.DataFrame(r)
+    print(weather_data.index)
+    for i in range(1, 3):  # len(weather_data)):
+        print(weather_data.values[i])
+        print(type(weather_data.values[i]))
+
+
+
+
+if __name__ == '__main__':
+    high_low_record_breakers_for_2015()

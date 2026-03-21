@@ -2,8 +2,8 @@ import datetime
 
 import pytest
 
-from high_low_temps import STATION
-from high_low_temps import high_low_record_breakers_for_2015 as hl_2015
+from record_breakers import STATION
+from record_breakers import high_low_record_breakers_for_2015 as hl_2015
 
 
 @pytest.fixture(scope="module")
