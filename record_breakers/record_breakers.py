@@ -48,46 +48,66 @@ def high_low_record_breakers_for_2015():
     """
     station_record_highs_by_day = defaultdict(dict)
     station_record_lows_by_day = defaultdict(dict)
-    r = requests.get(f'{DATA_FILE}')
-    weather_data = pd.read_csv(DATA_FILE)
-    print(f'len(weather_data is {len(weather_data)}  type(weather_data) is {type(weather_data)}')
-    print(f'df.shape is {weather_data.shape}')
-    data_value_min = np.iinfo(np.int64).max
-    data_value_max = np.iinfo(np.int64).min
-    min_station = STATION('', '', 0)
-    max_station = STATION('', '', 0)
+    try:
+        with requests.get(f'{DATA_FILE}', stream=True) as r:
+            # r = requests.get(f'{DATA_FILE}')
+            r.raise_for_status()
 
-    # for i in range(1, len(weather_data)):
-        # station_info = weather_data.iloc[i]
-    for i in range(1, len(weather_data)):
+            is_header_line = True
+            for line in r.iter_lines():
+                if is_header_line:
+                    print(line)
+                    print(f'len(line) is {len(line)}  type(line) is {type(line)}')
+                    is_header_line = False
+                    continue
+                else:
+                    weather_data = line  # pd.read_csv(DATA_FILE)
+                    print(weather_data)
+                    print(f'len(weather_data is {len(weather_data)}  type(weather_data) is {type(weather_data)}')
+                    return station_record_highs_by_day['04-10'], station_record_lows_by_day['04-10']
+                # print(f'df.shape is {weather_data.shape}')
+                # data_value_min = np.iinfo(np.int64).max
+                # data_value_max = np.iinfo(np.int64).min
+                data_value_min = float('inf')
+                data_value_max = float('-inf')
+                min_station = STATION('', '', 0)
+                max_station = STATION('', '', 0)
 
-        if i < 3:
-            print(weather_data.iloc[i])
-            print()
-        elif not i % 10000:
-            print(i)
+                # for i in range(1, len(weather_data)):
+                    # station_info = weather_data.iloc[i]
+                for i in range(1, len(weather_data)):
 
-        id = weather_data.iloc[i]['ID']
-        date = weather_data.iloc[i]['Date']
-        day = date[5:]
-        element = weather_data.iloc[i]['Element']
-        data_value = float(weather_data.iloc[i]['Data_Value'])/10.0
-        # print(f'type(id) is {type(id)}  type(date) is {type(date)}  type(element) is {type(element)}  '
-        #       f'type(data_value) is {type(data_value)}')
-        if date.startswith('2015'):
-            continue  # for now
-        if element == 'TMAX':
-            if (day not in station_record_highs_by_day.keys() or
-                    id not in station_record_highs_by_day[day] or
-                    data_value > station_record_highs_by_day[day][id].Value):
-                station_record_highs_by_day[day][id] = STATION(id, date, data_value)
-        elif element == 'TMIN':
-            if (day not in station_record_lows_by_day.keys() or
-                    id not in station_record_lows_by_day[day] or
-                    data_value < station_record_lows_by_day[day][id].Value):
-                station_record_lows_by_day[day][id] = STATION(id, date, data_value)
-        else:
-            continue
+                    if i < 3:
+                        # print(weather_data.iloc[i])
+                        print(weather_data)
+                        print()
+                    elif not i % 10000:
+                        print(i)
+
+                    # id = weather_data.iloc[i]['ID']
+                    # date = weather_data.iloc[i]['Date']
+                    # day = date[5:]
+                    # element = weather_data.iloc[i]['Element']
+                    # data_value = float(weather_data.iloc[i]['Data_Value'])/10.0
+                    # print(f'type(id) is {type(id)}  type(date) is {type(date)}  type(element) is {type(element)}  '
+                    #       f'type(data_value) is {type(data_value)}')
+                    if date.startswith('2015'):
+                        continue  # for now
+                    if element == 'TMAX':
+                        if (day not in station_record_highs_by_day.keys() or
+                                id not in station_record_highs_by_day[day] or
+                                data_value > station_record_highs_by_day[day][id].Value):
+                            station_record_highs_by_day[day][id] = STATION(id, date, data_value)
+                    elif element == 'TMIN':
+                        if (day not in station_record_lows_by_day.keys() or
+                                id not in station_record_lows_by_day[day] or
+                                data_value < station_record_lows_by_day[day][id].Value):
+                            station_record_lows_by_day[day][id] = STATION(id, date, data_value)
+                    else:
+                        continue
+    except requests.exceptions.RequestException as e:
+        print(f'An error occurred: {e}')
+
     return station_record_highs_by_day['04-10'], station_record_lows_by_day['04-10']
 
 
