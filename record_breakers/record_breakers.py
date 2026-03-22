@@ -46,8 +46,8 @@ def high_low_record_breakers_for_2015():
        temperatures
        * Return those as STATION namedtuples, (high_2015, low_2015)
     """
-    record_highs_by_date = defaultdict(list)
-    record_lows_by_date = defaultdict(list)
+    station_record_highs_by_day = defaultdict(dict)
+    station_record_lows_by_day = defaultdict(dict)
     r = requests.get(f'{DATA_FILE}')
     weather_data = pd.read_csv(DATA_FILE)
     print(f'len(weather_data is {len(weather_data)}  type(weather_data) is {type(weather_data)}')
@@ -64,19 +64,31 @@ def high_low_record_breakers_for_2015():
         if i < 3:
             print(weather_data.iloc[i])
             print()
-        # elif not i % 10000:
-        #     print(i)
+        elif not i % 10000:
+            print(i)
 
         id = weather_data.iloc[i]['ID']
         date = weather_data.iloc[i]['Date']
+        day = date[5:]
         element = weather_data.iloc[i]['Element']
-        data_value = weather_data.iloc[i]['Data_Value']
+        data_value = float(weather_data.iloc[i]['Data_Value'])/10.0
         # print(f'type(id) is {type(id)}  type(date) is {type(date)}  type(element) is {type(element)}  '
         #       f'type(data_value) is {type(data_value)}')
-        # if date.startswith('2015'):
-        #     continue  # for now
-
-    return 42
+        if date.startswith('2015'):
+            continue  # for now
+        if element == 'TMAX':
+            if (day not in station_record_highs_by_day.keys() or
+                    id not in station_record_highs_by_day[day] or
+                    data_value > station_record_highs_by_day[day][id].Value):
+                station_record_highs_by_day[day][id] = STATION(id, date, data_value)
+        elif element == 'TMIN':
+            if (day not in station_record_lows_by_day.keys() or
+                    id not in station_record_lows_by_day[day] or
+                    data_value < station_record_lows_by_day[day][id].Value):
+                station_record_lows_by_day[day][id] = STATION(id, date, data_value)
+        else:
+            continue
+    return station_record_highs_by_day['04-10'], station_record_lows_by_day['04-10']
 
 
 if __name__ == '__main__':
