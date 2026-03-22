@@ -1,8 +1,8 @@
-from collections import namedtuple
+from collections import namedtuple, defaultdict
 from datetime import date
 import os
 
-
+import numpy as np
 import pandas as pd
 import requests
 
@@ -46,16 +46,35 @@ def high_low_record_breakers_for_2015():
        temperatures
        * Return those as STATION namedtuples, (high_2015, low_2015)
     """
+    record_highs_by_date = defaultdict(list)
+    record_lows_by_date = defaultdict(list)
     r = requests.get(f'{DATA_FILE}')
     weather_data = pd.read_csv(DATA_FILE)
+    print(f'len(weather_data is {len(weather_data)}  type(weather_data) is {type(weather_data)}')
+    print(f'df.shape is {weather_data.shape}')
+    data_value_min = np.iinfo(np.int64).max
+    data_value_max = np.iinfo(np.int64).min
+    min_station = STATION('', '', 0)
+    max_station = STATION('', '', 0)
+
+    # for i in range(1, len(weather_data)):
+        # station_info = weather_data.iloc[i]
     for i in range(1, len(weather_data)):
+
         if i < 3:
             print(weather_data.iloc[i])
             print()
+        # elif not i % 10000:
+        #     print(i)
+
         id = weather_data.iloc[i]['ID']
         date = weather_data.iloc[i]['Date']
         element = weather_data.iloc[i]['Element']
         data_value = weather_data.iloc[i]['Data_Value']
+        # print(f'type(id) is {type(id)}  type(date) is {type(date)}  type(element) is {type(element)}  '
+        #       f'type(data_value) is {type(data_value)}')
+        # if date.startswith('2015'):
+        #     continue  # for now
 
     return 42
 
