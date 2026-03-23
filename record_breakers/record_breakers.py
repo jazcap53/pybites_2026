@@ -75,53 +75,21 @@ def high_low_record_breakers_for_2015():
                         if station_record_highs_by_day[day] is not None:
                             if station_record_highs_by_day[day].get(id) is not None:
                                 record_high_so_far = station_record_highs_by_day[day].get(id).get(data_value)
-                                if record_high_so_far and data_value > record_high_so_far:
-                                    pass
-                    return station_record_highs_by_day['04-10'], station_record_lows_by_day['04-10']
-                # print(f'df.shape is {weather_data.shape}')
-                # data_value_min = np.iinfo(np.int64).max
-                # data_value_max = np.iinfo(np.int64).min
-                data_value_min = float('inf')
-                data_value_max = float('-inf')
-                min_station = STATION('', '', 0)
-                max_station = STATION('', '', 0)
-
-                # for i in range(1, len(weather_data)):
-                    # station_info = weather_data.iloc[i]
-                for i in range(1, len(weather_data)):
-
-                    if i < 3:
-                        # print(weather_data.iloc[i])
-                        print(weather_data)
-                        print()
-                    elif not i % 10000:
-                        print(i)
-
-                    # id = weather_data.iloc[i]['ID']
-                    # date = weather_data.iloc[i]['Date']
-                    # day = date[5:]
-                    # element = weather_data.iloc[i]['Element']
-                    # data_value = float(weather_data.iloc[i]['Data_Value'])/10.0
-                    # print(f'type(id) is {type(id)}  type(date) is {type(date)}  type(element) is {type(element)}  '
-                    #       f'type(data_value) is {type(data_value)}')
-                    if date.startswith('2015'):
-                        continue  # for now
-                    if element == 'TMAX':
-                        if (day not in station_record_highs_by_day.keys() or
-                                id not in station_record_highs_by_day[day] or
-                                data_value > station_record_highs_by_day[day][id].Value):
-                            station_record_highs_by_day[day][id] = STATION(id, date, data_value)
+                                if record_high_so_far is not None and data_value > record_high_so_far:
+                                    station_record_highs_by_day[day][id] = data_value
                     elif element == 'TMIN':
-                        if (day not in station_record_lows_by_day.keys() or
-                                id not in station_record_lows_by_day[day] or
-                                data_value < station_record_lows_by_day[day][id].Value):
-                            station_record_lows_by_day[day][id] = STATION(id, date, data_value)
+                        if station_record_lows_by_day[day] is not None:
+                            if station_record_lows_by_day[day].get(id) is not None:
+                                record_low_so_far = station_record_lows_by_day[day].get(id).get(data_value)
+                                if record_low_so_far is not None and data_value < record_low_so_far:
+                                    station_record_lows_by_day[day][id] = data_value
                     else:
-                        continue
+                        raise ValueError('ValueError: element not TMAX or TMIN')
+
     except requests.exceptions.RequestException as e:
         print(f'An error occurred: {e}')
 
-    return station_record_highs_by_day['04-10'], station_record_lows_by_day['04-10']
+    return station_record_highs_by_day, station_record_lows_by_day
 
 
 if __name__ == '__main__':
