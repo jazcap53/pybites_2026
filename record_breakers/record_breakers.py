@@ -12,6 +12,9 @@ import requests
 DATA_FILE = "https://bites-data.s3.us-east-2.amazonaws.com/weather-ann-arbor.csv"
 STATION = namedtuple("Station", "ID Date Value")
 
+# def _place_in_records(weather_data: str):
+
+
 
 def high_low_record_breakers_for_2015():
     """Extract the high and low record breaking temperatures for 2015
@@ -61,9 +64,19 @@ def high_low_record_breakers_for_2015():
                     is_header_line = False
                     continue
                 else:
-                    weather_data = line  # pd.read_csv(DATA_FILE)
+                    weather_data = line.decode('utf-8')  # pd.read_csv(DATA_FILE)
                     print(weather_data)
-                    print(f'len(weather_data is {len(weather_data)}  type(weather_data) is {type(weather_data)}')
+                    print(f'len(weather_data) is {len(weather_data)}  type(weather_data) is {type(weather_data)}')
+                    id, date, element, data_value = weather_data.split(',')
+                    day = date[5:]
+                    print(f'id is {id}, day is {day}, date is {date}, element is {element}, '
+                          f'data_value is {data_value}')
+                    if element == 'TMAX':
+                        if station_record_highs_by_day[day] is not None:
+                            if station_record_highs_by_day[day].get(id) is not None:
+                                record_high_so_far = station_record_highs_by_day[day].get(id).get(data_value)
+                                if record_high_so_far and data_value > record_high_so_far:
+                                    pass
                     return station_record_highs_by_day['04-10'], station_record_lows_by_day['04-10']
                 # print(f'df.shape is {weather_data.shape}')
                 # data_value_min = np.iinfo(np.int64).max
