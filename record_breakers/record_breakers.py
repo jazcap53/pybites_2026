@@ -59,29 +59,35 @@ def high_low_record_breakers_for_2015():
             is_header_line = True
             for line in r.iter_lines():
                 if is_header_line:
-                    print(line)
-                    print(f'len(line) is {len(line)}  type(line) is {type(line)}')
+                    # print(line)
+                    # print(f'len(line) is {len(line)}  type(line) is {type(line)}')
                     is_header_line = False
                     continue
                 else:
                     weather_data = line.decode('utf-8')  # pd.read_csv(DATA_FILE)
-                    print(weather_data)
-                    print(f'len(weather_data) is {len(weather_data)}  type(weather_data) is {type(weather_data)}')
+                    # print(weather_data)
+                    # print(f'len(weather_data) is {len(weather_data)}  type(weather_data) is {type(weather_data)}')
                     id, date, element, data_value = weather_data.split(',')
                     day = date[5:]
-                    print(f'id is {id}, day is {day}, date is {date}, element is {element}, '
-                          f'data_value is {data_value}')
+                    # print(f'id is {id}, day is {day}, date is {date}, element is {element}, '
+                    #       f'data_value is {data_value}')
                     if element == 'TMAX':
-                        if station_record_highs_by_day[day] is not None:
+                        if station_record_highs_by_day[day] == {}:  # we have no data for 'day'
+                            station_record_highs_by_day[day] = {id: data_value}
+                        else:
+                            # if we have data for today for this station
                             if station_record_highs_by_day[day].get(id) is not None:
-                                record_high_so_far = station_record_highs_by_day[day].get(id).get(data_value)
-                                if record_high_so_far is not None and data_value > record_high_so_far:
+                                high_temp_so_far = station_record_highs_by_day[day][id]
+                                if data_value > high_temp_so_far:
                                     station_record_highs_by_day[day][id] = data_value
                     elif element == 'TMIN':
-                        if station_record_lows_by_day[day] is not None:
+                        if station_record_lows_by_day[day] == {}:  # we have no data for 'day'
+                            station_record_lows_by_day[day] = {id: data_value}
+                        else:
+                            # if we have data for today for this station
                             if station_record_lows_by_day[day].get(id) is not None:
-                                record_low_so_far = station_record_lows_by_day[day].get(id).get(data_value)
-                                if record_low_so_far is not None and data_value < record_low_so_far:
+                                low_temp_so_far = station_record_lows_by_day[day][id]
+                                if data_value < low_temp_so_far:
                                     station_record_lows_by_day[day][id] = data_value
                     else:
                         raise ValueError('ValueError: element not TMAX or TMIN')
@@ -93,4 +99,6 @@ def high_low_record_breakers_for_2015():
 
 
 if __name__ == '__main__':
-    print(high_low_record_breakers_for_2015())
+    hi, lo = high_low_record_breakers_for_2015()
+    print(sorted(hi.items(), key=lambda item: item[0]))
+    print(sorted(lo.items(), key=lambda item: item[0]))
