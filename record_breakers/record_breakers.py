@@ -51,8 +51,6 @@ def high_low_record_breakers_for_2015():
     """
     station_record_highs_by_day = defaultdict(dict)
     station_record_lows_by_day = defaultdict(dict)
-    hi_data = []
-    lo_data = []
     try:
         with requests.get(f'{DATA_FILE}', stream=True) as r:
             # r = requests.get(f'{DATA_FILE}')
@@ -69,64 +67,35 @@ def high_low_record_breakers_for_2015():
                     weather_data = line.decode('utf-8')  # pd.read_csv(DATA_FILE)
                     # print(weather_data)
                     # print(f'len(weather_data) is {len(weather_data)}  type(weather_data) is {type(weather_data)}')
-                    station_id, reading_date, element, data_value = weather_data.split(',')
-                    day = reading_date[5:]
-                    if element == 'TMAX':
-                        replaced = False
-                        this_days_hi = {day: STATION(station_id, reading_date, data_value)}
-                        for list_item in hi_data:
-                            if replaced:
-                                break
-                            item_key = next(iter(list_item.keys()))
-                            if day == item_key and list_item[item_key].Value < data_value:
-                            # if day in hi_data and hi_data[day][data_value] < data_value:
-                                list_item[item_key][data_value] = data_value
-                                # hi_data[day][data_value] = data_value
-                                replaced = True
-                        if not replaced:
-                            hi_data.append(this_days_hi)
-                    elif element == 'TMIN':
-                        replaced = False
-                        this_days_lo = {day: STATION(station_id, reading_date, data_value)}
-                        for list_item in lo_data:
-                            if replaced:
-                                break
-                            item_key = next(iter(list_item.keys()))
-                            if day == item_key and list_item[item_key].Value > data_value:
-                                list_item[item_key][data_value] = data_value
-                                replaced = True
-                        if not replaced:
-                            lo_data.append(this_days_lo)
-                    else:
-                        raise ValueError('ValueError: element not TMAX or TMIN')
+                    id, date, element, data_value = weather_data.split(',')
+                    day = date[5:]
                     # print(f'id is {id}, day is {day}, date is {date}, element is {element}, '
                     #       f'data_value is {data_value}')
-                    # if element == 'TMAX':
-                    #     if station_record_highs_by_day[day] == {}:  # we have no data for 'day'
-                    #         station_record_highs_by_day[day] = {id: data_value}
-                    #     else:
-                    #         # if we have data for today for this station
-                    #         if station_record_highs_by_day[day].get(id) is not None:
-                    #             high_temp_so_far = station_record_highs_by_day[day][id]
-                    #             if data_value > high_temp_so_far:
-                    #                 station_record_highs_by_day[day][id] = data_value
-                    # elif element == 'TMIN':
-                    #     if station_record_lows_by_day[day] == {}:  # we have no data for 'day'
-                    #         station_record_lows_by_day[day] = {id: data_value}
-                    #     else:
-                    #         # if we have data for today for this station
-                    #         if station_record_lows_by_day[day].get(id) is not None:
-                    #             low_temp_so_far = station_record_lows_by_day[day][id]
-                    #             if data_value < low_temp_so_far:
-                    #                 station_record_lows_by_day[day][id] = data_value
-                    # else:
-                    #     raise ValueError('ValueError: element not TMAX or TMIN')
+                    if element == 'TMAX':
+                        if station_record_highs_by_day[day] == {}:  # we have no data for 'day'
+                            station_record_highs_by_day[day] = {id: data_value}
+                        else:
+                            # if we have data for today for this station
+                            if station_record_highs_by_day[day].get(id) is not None:
+                                high_temp_so_far = station_record_highs_by_day[day][id]
+                                if data_value > high_temp_so_far:
+                                    station_record_highs_by_day[day][id] = data_value
+                    elif element == 'TMIN':
+                        if station_record_lows_by_day[day] == {}:  # we have no data for 'day'
+                            station_record_lows_by_day[day] = {id: data_value}
+                        else:
+                            # if we have data for today for this station
+                            if station_record_lows_by_day[day].get(id) is not None:
+                                low_temp_so_far = station_record_lows_by_day[day][id]
+                                if data_value < low_temp_so_far:
+                                    station_record_lows_by_day[day][id] = data_value
+                    else:
+                        raise ValueError('ValueError: element not TMAX or TMIN')
 
     except requests.exceptions.RequestException as e:
         print(f'An error occurred: {e}')
 
-    # return station_record_highs_by_day, station_record_lows_by_day
-    return hi_data, lo_data
+    return station_record_highs_by_day, station_record_lows_by_day
 
 
 if __name__ == '__main__':
