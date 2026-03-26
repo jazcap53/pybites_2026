@@ -64,25 +64,23 @@ def high_low_record_breakers_for_2015():
                     continue
                 else:
                     weather_data = line.decode('utf-8')  # pd.read_csv(DATA_FILE)
-                    # print(weather_data)
-                    # print(f'len(weather_data) is {len(weather_data)}  type(weather_data) is {type(weather_data)}')
                     station_id, observed_date, element, data_value = weather_data.split(',')
                     observed_day = observed_date[5:]
                     observed_year = observed_date.lstrip()[:4]
                     if observed_day == '02-29':
                         continue
-                    observation = STATION(station_id, observed_date, data_value)
+                    observation = (station_id, observed_date, data_value)
                     if element == 'TMAX':# print(f'id is {id}, day is {day}, date is {date}, element is {element}, '
                         if observed_year != '2015':
-                            ten_year_station_record_highs_by_day[observed_day].extend(observation)
+                            ten_year_station_record_highs_by_day[observed_day].append(observation)
                         else:
-                            latest_station_record_highs_by_day[observed_day] += observation
+                            latest_station_record_highs_by_day[observed_day].append(observation)
                     elif element == 'TMIN':
                         # observation = STATION(station_id, observed_date, data_value)
                         if observed_year != '2015':
-                            ten_year_station_record_lows_by_day[observed_day] += observation
+                            ten_year_station_record_lows_by_day[observed_day].append(observation)
                         else:
-                            latest_station_record_lows_by_day[observed_day] += observation
+                            latest_station_record_lows_by_day[observed_day].append(observation)
                     else:
                         raise ValueError('ValueError: element not TMAX or TMIN')
 
@@ -102,4 +100,4 @@ def high_low_record_breakers_for_2015():
 if __name__ == '__main__':
     hi, lo = high_low_record_breakers_for_2015()
     print(hi)
-    print(lo)
+    # print(lo)
