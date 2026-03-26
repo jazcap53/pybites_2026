@@ -6,9 +6,6 @@ import numpy as np
 import pandas as pd
 import requests
 
-
-
-
 DATA_FILE = "https://bites-data.s3.us-east-2.amazonaws.com/weather-ann-arbor.csv"
 STATION = namedtuple("Station", "ID Date Value")
 
@@ -49,8 +46,10 @@ def high_low_record_breakers_for_2015():
        temperatures
        * Return those as STATION namedtuples, (high_2015, low_2015)
     """
-    station_record_highs_by_day = defaultdict(dict)
-    station_record_lows_by_day = defaultdict(dict)
+    ten_year_station_record_highs_by_day = defaultdict(tuple)
+    ten_year_station_record_lows_by_day = defaultdict(tuple)
+    latest_station_record_highs_by_day = defaultdict(tuple)
+    latest_station_record_lows_by_day = defaultdict(tuple)
     try:
         with requests.get(f'{DATA_FILE}', stream=True) as r:
             # r = requests.get(f'{DATA_FILE}')
@@ -67,38 +66,40 @@ def high_low_record_breakers_for_2015():
                     weather_data = line.decode('utf-8')  # pd.read_csv(DATA_FILE)
                     # print(weather_data)
                     # print(f'len(weather_data) is {len(weather_data)}  type(weather_data) is {type(weather_data)}')
-                    id, date, element, data_value = weather_data.split(',')
-                    day = date[5:]
+                    station_id, observed_date, element, data_value = weather_data.split(',')
+                    observed_day = observed_date[5:]
+                    observed_year = observed_date[-4:]
+                    if observed_day == '02-29':
+                        continue
                     # print(f'id is {id}, day is {day}, date is {date}, element is {element}, '
                     #       f'data_value is {data_value}')
                     if element == 'TMAX':
-                        if station_record_highs_by_day[day] == {}:  # we have no data for 'day'
-                            station_record_highs_by_day[day] = {id: data_value}
+                        observation = STATION(station_id, observed_date, data_value)
+                        if observed_year != '2015':
+                            ten_year_station_record_highs_by_day[observed_day] += observation
                         else:
-                            # if we have data for today for this station
-                            if station_record_highs_by_day[day].get(id) is not None:
-                                high_temp_so_far = station_record_highs_by_day[day][id]
-                                if data_value > high_temp_so_far:
-                                    station_record_highs_by_day[day][id] = data_value
+                            latest_station_record_highs_by_day[observed_day] = observation
                     elif element == 'TMIN':
-                        if station_record_lows_by_day[day] == {}:  # we have no data for 'day'
-                            station_record_lows_by_day[day] = {id: data_value}
+                        observation = STATION(station_id, observed_date, data_value)
+                        if observed_year != '2015':
+                            ten_year_station_record_lows_by_day[observed_day] += observation
                         else:
-                            # if we have data for today for this station
-                            if station_record_lows_by_day[day].get(id) is not None:
-                                low_temp_so_far = station_record_lows_by_day[day][id]
-                                if data_value < low_temp_so_far:
-                                    station_record_lows_by_day[day][id] = data_value
+                            latest_station_record_lows_by_day[observed_day] = observation
                     else:
                         raise ValueError('ValueError: element not TMAX or TMIN')
 
     except requests.exceptions.RequestException as e:
         print(f'An error occurred: {e}')
 
-    return station_record_highs_by_day, station_record_lows_by_day
+    best_hi_so_far = float('-inf')
+    best_lo_so_far = float('inf')
+    for k, v in latest_station_record_highs_by_day.items():
+        pass  # N.Y.I.
+
+
+
+    return None, None  # N.Y.I.
 
 
 if __name__ == '__main__':
     hi, lo = high_low_record_breakers_for_2015()
-    print(sorted(hi.items(), key=lambda item: item[0]))
-    print(sorted(lo.items(), key=lambda item: item[0]))
