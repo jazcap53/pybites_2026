@@ -74,7 +74,13 @@ def high_low_record_breakers_for_2015():
                         if observed_year != '2015':
                             ten_year_station_record_highs_by_day[observed_day].append(observation)
                         else:
-                            latest_station_record_highs_by_day[observed_day].append(observation)
+                            if latest_station_record_highs_by_day.get(observed_day) is None:
+                                latest_station_record_highs_by_day[observed_day].append(observation)
+                            else:
+                                if float(data_value) > float(latest_station_record_highs_by_day[observed_day][0][2]):
+                                    latest_station_record_highs_by_day[observed_day] = [observation]
+                                else:
+                                    pass
                     elif element == 'TMIN':
                         # observation = STATION(station_id, observed_date, data_value)
                         if observed_year != '2015':
@@ -87,17 +93,35 @@ def high_low_record_breakers_for_2015():
     except requests.exceptions.RequestException as e:
         print(f'An error occurred: {e}')
 
-    best_hi_so_far = float('-inf')
-    best_lo_so_far = float('inf')
+    best_hi_day = ''
+    best_hi_id = ''
+    best_hi_date = ''
+    best_hi_temp = float('-inf')
+    best_lo_day = ''
+    best_lo_id = ''
+    best_lo_date = ''
+    best_lo_temp = float('inf')
     for k, v in latest_station_record_highs_by_day.items():
-        pass  # N.Y.I.
+        if float(v[0][2]) > best_hi_temp:  # v[0][2] is a temperature in tenths of a degree Celsus
+            best_hi_day = k
+            best_hi_id = v[0][0]
+            best_hi_date = v[0][1]
+            best_hi_temp = float(v[0][2])
+    for k, v in latest_station_record_lows_by_day.items():
+        if float(v[0][2]) > best_lo_temp:  # v[0][2] is a temperature in tenths of a degree Celsus
+            best_lo_day = k
+            best_lo_id = v[0][0]
+            best_lo_date = v[0][1]
+            best_lo_temp = float(v[0][2])
+
+    hi_named_tuple = STATION(best_hi_id, best_hi_date, best_hi_temp)
+    lo_named_tuple = STATION(best_lo_id, best_lo_date, best_lo_temp)
 
 
-
-    return latest_station_record_highs_by_day, latest_station_record_lows_by_day  # N.Y.I.
+    return hi_named_tuple, lo_named_tuple
 
 
 if __name__ == '__main__':
     hi, lo = high_low_record_breakers_for_2015()
     print(hi)
-    # print(lo)
+    print(lo)
