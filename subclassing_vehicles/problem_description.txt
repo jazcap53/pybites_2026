@@ -1,24 +1,34 @@
 In this exercise, you’ll practice creating Python subclasses and using super() to inherit from a parent class.
 
-Subclassing allows you to build specialized versions of a general blueprint, making your code more organized and reusable.
+Subclassing allows you to build specialized versions of a general blueprint, making your code more organized and
+reusable.
 
 If you're new to this concept, check out our article: How to Write a Python Subclass.
 
-You’ll start with a Vehicle base class containing attributes common to all vehicles. From there, you’ll create two subclasses — Car and Motorbike — each adding their own unique attributes and methods. Both subclasses should still have access to all methods from Vehicle.
+You’ll start with a Vehicle base class containing attributes common to all vehicles. From there, you’ll create two
+subclasses — Car and Motorbike — each adding their own unique attributes and methods. Both subclasses should still
+have access to all methods from Vehicle.
+
 Your task
 
-    Implement the Vehicle class with brand, model, and wheels attributes, plus a description() method that returns: "<brand> <model> with <wheels> wheels", for example: "Toyota Corolla with 4 wheels".
+    Implement the Vehicle class with brand, model, and wheels attributes, plus a description() method that returns:
+    "<brand> <model> with <wheels> wheels", for example: "Toyota Corolla with 4 wheels".
 
     Create a Car subclass with an extra doors attribute and a honk() method returning: "Beep beep!".
 
-    Create a Motorbike subclass with an extra engine_cc attribute and a rev_engine() method returning: "<parent class's description method> goes Vroom vroom!", for example: "Yamaha R3 with 2 wheels goes Vroom vroom!"
+    Create a Motorbike subclass with an extra engine_cc attribute and a rev_engine() method returning:
+    "<parent class's description method> goes Vroom vroom!", for example: "Yamaha R3 with 2 wheels goes Vroom vroom!"
 
     Use super() in each subclass’s constructor to initialize the shared attributes.
 
-💡 Tip: In real-world code, you can make constructor parameters keyword-only (e.g., Motorbike(brand="Yamaha", model="R3", wheels=2, engine_cc=321)) to avoid mixing up arguments. We’re keeping them positional here for simplicity.
+💡 Tip: In real-world code, you can make constructor parameters keyword-only (e.g., Motorbike(brand="Yamaha",
+        model="R3", wheels=2, engine_cc=321)) to avoid mixing up arguments. We’re keeping them positional here for
+        simplicity.
 
 Related exercise: Force keyword arguments
 
-By the end, you’ll see how inheritance lets you reuse code across multiple classes while still customizing behavior for specific cases. This is a core principle of object-oriented programming (OOP) and a powerful tool in your Python skill set.
+By the end, you’ll see how inheritance lets you reuse code across multiple classes while still customizing behavior
+for specific cases. This is a core principle of object-oriented programming (OOP) and a powerful tool in your Python
+skill set.
 
 For more OOP exercises, check out our OOP track.
