@@ -23,19 +23,14 @@ def get_bodybuilder_friendly_foods(df=df, excl_drinks=False):
        right results.
 
        Return a list of the top 5 foot Item stings."""
-    all_protein = df.loc[df['Protein'].idxmax()]
-    print(f'type(all_protein is {type(all_protein)}')
-    # print(all_protein)
-    all_calories = df.loc[df['Calories'].idxmax()]
-    # print(all_calories)
-    # print(f'this is {df[df['Calories'] != 0]} \n')  # this doesn't work
 
     non_z = df[df['Calories'] != 0]
-    print(f'type of non_z is {type(non_z)}')
-
+    print(f'type of non_z is {type(non_z)}')  # a DataFrame
     non_z['Quotients'] = non_z['Protein'] / non_z['Calories']
-    print(f'type of non_z["Quotients"] is {type(non_z["Quotients"])}')
-    good_food = non_z.loc[non_z['Quotients'].idxmax()]['Item']
+    print(f'type of non_z["Quotients"] is {type(non_z["Quotients"])}')  # a Series
+    non_z_sorted = non_z.sort_values(by='Quotients', ascending=False)
+    good_food = list(non_z_sorted[0:5]['Item'])
+    print(f'type of good_food is {type(good_food)}')
     print(good_food)
     return good_food
 
