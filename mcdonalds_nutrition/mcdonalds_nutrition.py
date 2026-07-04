@@ -23,8 +23,8 @@ def get_bodybuilder_friendly_foods(df=df, excl_drinks=False):
        right results.
 
        Return a list of the top 5 foot Item stings."""
-
-    non_z = df[df['Calories'] != 0]
+    non_z = df[(df['Calories'] != 0) & ((excl_drinks is False) |
+               (~df['Category'].isin(['Beverages', 'Coffee & Tea'])))]
     print(f'type of non_z is {type(non_z)}')  # a DataFrame
     non_z['Quotients'] = non_z['Protein'] / non_z['Calories']
     print(f'type of non_z["Quotients"] is {type(non_z["Quotients"])}')  # a Series
