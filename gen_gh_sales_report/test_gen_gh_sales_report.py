@@ -1,7 +1,7 @@
 import pandas as pd
 import pytest
 
-from sales import get_data, process_data, summary_report, yearly_report, URL
+from gen_gh_sales_report import get_data, process_data, summary_report, yearly_report, URL
 
 
 @pytest.fixture(scope="function")
