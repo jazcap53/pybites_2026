@@ -66,17 +66,13 @@ def summary_report(df: pd.DataFrame, stats: Union[List[str], None] = STATS) -> N
         2015  608473.83  50706.152500   97237.42
         2016  733947.03  61162.252500  118447.83
     """
-    df2 = pd.DataFrame
-    df2['year'] = pd.to_datetime(df['month']).dt.year
-    print(df.groupby('year')['sales'].sum())
+    df['year'] = pd.to_datetime(df['month']).dt.year
+
+    df2 = pd.DataFrame(columns=['sum', 'mean', 'max'])
     df2['sum'] = df.groupby('year')['sales'].sum()
-    print(df['sum'])
     df2['mean'] = df.groupby('year')['sales'].mean()
     df2['max'] = df.groupby('year')['sales'].max()
     print(df2)
-    # pivot_df = pd.pivot(df, index='year', columns=stats, values='sales')
-    # print(pivot_df)
-
 
 
 def yearly_report(df: pd.DataFrame, year: int) -> None:
