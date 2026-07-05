@@ -22,20 +22,22 @@ def get_year_region_breakdown(df):
     """Group the DataFrame by year and region, summing the Total
        column. You probably need to make an extra column for
        year, return the new df as shown in the Bite description"""
-    pass
+    df['Year'] = df['OrderDate'].dt.year
+    result = df.groupby(['Year', 'Region'])['Total'].sum()
+    return result
 
 
 def get_best_sales_rep(df):
     """Return a tuple of the name of the sales rep and
        the total of his/her sales"""
-    pass
+    max_total = df.groupby('Rep')['Total'].sum().max()
+    rep_name = df.groupby('Rep')['Total'].sum().idxmax()
+    return rep_name, max_total
 
 
 def get_most_sold_item(df):
     """Return a tuple of the name of the most sold item
        and the number of units sold"""
-    pass
-
-
-if __name__ == '__main__':
-    print(EXCEL)
+    most_sold = df.groupby('Item')['Units'].sum().idxmax()
+    num_units = df.groupby('Item')['Units'].sum().max()
+    return most_sold, num_units
