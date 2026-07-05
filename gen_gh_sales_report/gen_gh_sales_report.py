@@ -42,13 +42,8 @@ def process_data(url=URL) -> pd.DataFrame:
     """
     my_dict = get_data(url)
     df = pd.read_csv(my_dict['download_url'])
-    print(df.head(10))
+    # print(df.head(4))
     return df
-
-
-
-
-
 
 
 def summary_report(df: pd.DataFrame, stats: Union[List[str], None] = STATS) -> None:
@@ -71,7 +66,12 @@ def summary_report(df: pd.DataFrame, stats: Union[List[str], None] = STATS) -> N
         2015  608473.83  50706.152500   97237.42
         2016  733947.03  61162.252500  118447.83
     """
-    pass
+    df['year'] = pd.to_datetime(df['month']).dt.year
+    df['sum'] = df.groupby('year')['sales'].sum()
+    df['mean'] = df.groupby('year')['sales'].mean()
+    df['max'] = df.groupby('year')['sales'].max()
+    pivot_df = pd.pivot_table(df, index='year', columns=['sum', 'mean', 'max'], values='sales')
+    print(pivot_df)
 
 
 def yearly_report(df: pd.DataFrame, year: int) -> None:
@@ -111,7 +111,8 @@ def yearly_report(df: pd.DataFrame, year: int) -> None:
 # uncomment the following for viewing/testing the reports/code
 if __name__ == "__main__":
     data = process_data(URL)
-#     summary_report(data)
+    print(data.head(3))
+    summary_report(data)
 #     for year in (data["month"].dt.year).unique():
 #         yearly_report(data, year)
 
