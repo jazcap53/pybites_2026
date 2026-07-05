@@ -31,7 +31,7 @@ def get_data(url: str) -> Dict[str, str]:
     return data
 
 
-def process_data(url: str) -> pd.DataFrame:
+def process_data(url=URL) -> pd.DataFrame:
     """Process the data from the Github API
 
     Args:
@@ -40,7 +40,15 @@ def process_data(url: str) -> pd.DataFrame:
     Returns:
         pd.DataFrame: Pandas DataFrame generated from the processed data
     """
-    data = get_data(url)
+    my_dict = get_data(url)
+    df = pd.read_csv(my_dict['download_url'])
+    print(df.head(10))
+    return df
+
+
+
+
+
 
 
 def summary_report(df: pd.DataFrame, stats: Union[List[str], None] = STATS) -> None:
@@ -101,8 +109,8 @@ def yearly_report(df: pd.DataFrame, year: int) -> None:
 
 
 # uncomment the following for viewing/testing the reports/code
-# if __name__ == "__main__":
-#     data = process_data(URL)
+if __name__ == "__main__":
+    data = process_data(URL)
 #     summary_report(data)
 #     for year in (data["month"].dt.year).unique():
 #         yearly_report(data, year)
