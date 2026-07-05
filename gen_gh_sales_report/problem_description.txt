@@ -1,0 +1,45 @@
+In this bite you will learn how to process the output from a Github API call and generate a summary
+sales report along with a yearly one. It’s up to you to decide how to approach this bite, with the exception
+of having to create a Pandas DataFrame from the data.
+
+Summary Report
+
+The summary report that you will generate will look like this by default:
+
+                    sum          mean        max
+        year
+        2013  484247.51  40353.959167   81777.35
+        2014  470532.51  39211.042500   75972.56
+        2015  608473.83  50706.152500   97237.42
+        2016  733947.03  61162.252500  118447.83
+
+I’ve provided the global variable STATS, which is a list with sum, mean, max in it. This is what controls what is
+included in the summary report. That being said, the summary_report() function will include the optional stats
+variable, which should default to STATS.
+
+Yearly Report
+
+The yearly report should be as follows, for example:
+
+        2013
+                  sales
+        month
+        1      14236.90
+        2       4519.89
+        3      55691.01
+        4      28295.35
+        5      23648.29
+        6      34595.13
+        7      33946.39
+        8      27909.47
+        9      81777.35
+        10     31453.39
+        11     78628.72
+        12     69545.62
+
+The yearly_report() function, along with requiring the DataFrame to work from, takes a year variable which
+determines which year to report on. If the given year is not included in the report, a ValueError should be
+raised.
+
+For example, lets say that the year 1800 was passed, the error message should be: "The year 1800 is not included
+in the report!"
