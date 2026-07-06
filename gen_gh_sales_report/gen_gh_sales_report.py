@@ -111,21 +111,21 @@ def yearly_report(df: pd.DataFrame, year: int) -> None:
     # print(df.dtypes)
     # df['year'] = pd.to_datetime(df['month']).dt.year
     # months = pd.to_datetime(df['month']).dt.month
-    # print(df)
-    # print(months)
     df2 = pd.DataFrame(columns = ['year', 'month', 'sales'])
-    # df2['year'] = df[to_datetime(df['month']).dt.year == str(year)]
+
     df2['year'] = to_datetime(df['month']).dt.year
     df2['month'] = to_datetime(df['month']).dt.month
     df2['sales'] = df['sales']
-    print(df2)
+
+    result = df2[df2['year'] == year][['month', 'sales']]
+    print(result)
 
 
 
 # uncomment the following for viewing/testing the reports/code
 if __name__ == "__main__":
     data = process_data(URL)
-    # summary_report(data)
+    summary_report(data)
     yearly_report(data, 2013)
     # for year in (data["month"].dt.year).unique():
     #     yearly_report(data, year)
