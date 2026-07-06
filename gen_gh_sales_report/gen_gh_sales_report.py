@@ -5,6 +5,7 @@ from typing import Dict, List, Union
 
 import pandas as pd  # type: ignore
 import requests
+from pandas import to_datetime
 
 URL: str = "https://bites-data.s3.us-east-2.amazonaws.com/MonthlySales.csv"
 STATS: List[str] = ["sum", "mean", "max"]
@@ -106,15 +107,27 @@ def yearly_report(df: pd.DataFrame, year: int) -> None:
         11     78628.72
         12     69545.62
     """
-    pass
+    # print(df)
+    # print(df.dtypes)
+    # df['year'] = pd.to_datetime(df['month']).dt.year
+    # months = pd.to_datetime(df['month']).dt.month
+    # print(df)
+    # print(months)
+    df2 = pd.DataFrame(columns = ['year', 'month', 'sales'])
+    # df2['year'] = df[to_datetime(df['month']).dt.year == str(year)]
+    df2['year'] = to_datetime(df['month']).dt.year
+    df2['month'] = to_datetime(df['month']).dt.month
+    df2['sales'] = df['sales']
+    print(df2)
+
 
 
 # uncomment the following for viewing/testing the reports/code
 if __name__ == "__main__":
     data = process_data(URL)
-    # print(data.head(3))
-    summary_report(data)
-#     for year in (data["month"].dt.year).unique():
-#         yearly_report(data, year)
+    # summary_report(data)
+    yearly_report(data, 2013)
+    # for year in (data["month"].dt.year).unique():
+    #     yearly_report(data, year)
 
 #     yearly_report(data, 2020)
