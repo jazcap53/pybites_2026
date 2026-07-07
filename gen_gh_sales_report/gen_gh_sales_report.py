@@ -69,8 +69,8 @@ def summary_report(df: pd.DataFrame, stats: Union[List[str], None] = STATS) -> N
     """
     df['year'] = pd.to_datetime(df['month']).dt.year
 
-    df3 = df.groupby('year')['sales'].agg(stats)
-    print(df3)
+    df2 = df.groupby('year')['sales'].agg(stats)
+    print(df2)
 
 
 def yearly_report(df: pd.DataFrame, year: int) -> None:
@@ -115,7 +115,7 @@ def yearly_report(df: pd.DataFrame, year: int) -> None:
     df2['sales'] = df['sales']
 
     result = df2[df2['year'] == year][['month', 'sales']]
-    print(result)
+    print(result.to_string(index=False))
 
 
 
@@ -123,8 +123,9 @@ def yearly_report(df: pd.DataFrame, year: int) -> None:
 if __name__ == "__main__":
     data = process_data(URL)
     summary_report(data)
-    # yearly_report(data, 2013)
-    # for year in (data["month"].dt.year).unique():
-    #     yearly_report(data, year)
+    yearly_report(data, 2013)
+    # print(data['month'].dtype)
+    # for year in (data["month"]).unique():
+    #     yearly_report(data, int(year[0:4]))
 
 #     yearly_report(data, 2020)
