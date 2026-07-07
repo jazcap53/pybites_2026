@@ -104,25 +104,27 @@ def yearly_report(df: pd.DataFrame, year: int) -> None:
         11     78628.72
         12     69545.62
     """
-    # print(df)
-    # print(df.dtypes)
-    # df['year'] = pd.to_datetime(df['month']).dt.year
-    # months = pd.to_datetime(df['month']).dt.month
     df2 = pd.DataFrame(columns = ['year', 'month', 'sales'])
 
     df2['year'] = to_datetime(df['month']).dt.year
     df2['month'] = to_datetime(df['month']).dt.month
     df2['sales'] = df['sales']
 
-    result = df2[df2['year'] == year][['month', 'sales']]
-    print(result.to_string(index=False))
+    df2_year = df2[df2['year'] == year]
 
+    if df2_year.empty:
+        raise ValueError(f'The year {year} is not included in the report!')
+
+    final_view = df2_year.set_index('month')[['sales']]
+
+    print(year, '\n', '    ', '\n', final_view)
 
 
 # uncomment the following for viewing/testing the reports/code
 if __name__ == "__main__":
     data = process_data(URL)
-    summary_report(data)
+    # print(data)
+    # summary_report(data)
     yearly_report(data, 2013)
     # print(data['month'].dtype)
     # for year in (data["month"]).unique():
