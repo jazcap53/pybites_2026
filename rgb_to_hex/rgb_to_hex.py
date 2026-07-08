@@ -7,5 +7,4 @@ def rgb_to_hex(rgb):
             assert 0 <= v <= 255
     except:
         raise ValueError("value out of range")
-    r, g, b = rgb
     return '#' + '{:0>2X}{:0>2X}{:0>2X}'.format(*rgb)
