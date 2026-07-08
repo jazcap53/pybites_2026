@@ -1,6 +1,6 @@
 import pytest
 
-from rgb2hex import rgb_to_hex
+from rgb_to_hex import rgb_to_hex
 
 
 @pytest.mark.parametrize("rgb, hex_", [
