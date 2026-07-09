@@ -1,0 +1,8 @@
+Another unicode Bite. Given some non-English text with accents (á, é, í, used in Spanish for example),
+extract the accented characters. That's it.
+
+Check out the unicodedata module which should make this fairly straightforward.
+
+Another unicode Bite you can take is: Emoji (Unicode).
+
+Additional article resource: How Encoding Works in Python
