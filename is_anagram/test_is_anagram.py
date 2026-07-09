@@ -4,7 +4,7 @@
 # a parody, a criticism or satire.
 import pytest
 
-from anagram import is_anagram
+from is_anagram import is_anagram
 
 
 @pytest.mark.parametrize("word1, word2", [
