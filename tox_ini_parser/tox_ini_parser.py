@@ -25,9 +25,10 @@ class ToxIniParser:
         # print(f'list of environments is {self.ini_data['tox']}')
         # print(f'type of list of environments is {type(self.ini_data['tox'])}')
         ret_val = self.ini_data['tox']['envlist'].strip().split('\n')
-        print(f'type ret_val is {type(ret_val)}')
-        print(f'ret_val is {ret_val}')
-        print(f'sorted(ret_val) is {sorted(ret_val)}')
+        # print(f'type ret_val is {type(ret_val)}')
+        # print(f'ret_val is {ret_val}')
+        # print(f'sorted(ret_val) is {sorted(ret_val)}')
+        # print(list(item for item in ret_val))
         return ret_val
 
     @property
