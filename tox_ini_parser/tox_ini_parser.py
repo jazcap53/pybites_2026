@@ -1,4 +1,5 @@
 import configparser
+import re
 
 
 class ToxIniParser:
@@ -8,28 +9,24 @@ class ToxIniParser:
         self.config = configparser.ConfigParser()
         self.config.read(ini_file)
         self.ini_data = {section: dict(self.config[section]) for section in self.config.keys()}
-        # print(f'self.ini_data is {self.ini_data}')
+        self._environments = [
+            env.strip()
+            for env in re.split(r'[,\n]', self.ini_data['tox']['envlist'])
+            if env.strip()
+        ]
 
     @property
     def number_of_sections(self):
         """Return the number of sections in the ini file.
            New to properties? -> https://pybit.es/articles/property-decorator
         """
-        # print(f'sections are {self.config.sections()}')
         return len(self.config.sections())
 
     @property
     def environments(self):
         """Return a list of environments
            (= "envlist" attribute of [tox] section)"""
-        # print(f'list of environments is {self.ini_data['tox']}')
-        # print(f'type of list of environments is {type(self.ini_data['tox'])}')
-        ret_val = self.ini_data['tox']['envlist'].strip().split('\n')
-        # print(f'type ret_val is {type(ret_val)}')
-        # print(f'ret_val is {ret_val}')
-        # print(f'sorted(ret_val) is {sorted(ret_val)}')
-        # print(list(item for item in ret_val))
-        return ret_val
+        return self._environments
 
     @property
     def base_python_versions(self):
@@ -39,7 +36,6 @@ class ToxIniParser:
             for key, value in self.config[section_name].items():
                 if key == 'basepython':
                     bases.add(value)
-        # print(bases)
         return list(bases)
 
 
