@@ -1,6 +1,6 @@
 import pytest
 
-from html_quotes import extract_quotes
+from html_quotes_2 import (extract_quotes)
 
 
 expected_authors = [
