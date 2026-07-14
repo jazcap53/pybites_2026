@@ -1,3 +1,6 @@
+from bs4 import BeautifulSoup
+import string
+
 # source: https://www.virgin.com/richard-branson/my-top-10-quotes-living-life-better
 HTML = """<!DOCTYPE html>
 <head>
@@ -26,4 +29,17 @@ HTML = """<!DOCTYPE html>
 
 def extract_quotes(html: str = HTML) -> dict:
     """See instructions in the Bite description"""
-    pass
+    soup = BeautifulSoup(HTML, "html.parser")
+    quotes = [q.text for q in soup.find_all('p') if q.text.startswith(tuple(string.digits))]
+    ret = {}
+    for q in quotes:
+        triple = (q.lstrip(string.digits + '.' + ' ')).partition(' - ')
+        ret[triple[2]] = triple[0].strip('\"')
+    return ret
+
+
+
+if __name__ == '__main__':
+    for author, quote in extract_quotes().items():
+        print(f'{author} says {quote}')
+
