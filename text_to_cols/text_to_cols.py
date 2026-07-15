@@ -13,17 +13,22 @@ def text_to_columns(text):
        Return a string with the column output like:
        line1\nline2\nline3\n ... etc ...
        See also the tests for more info."""
-    n_cols = text.count('\n\n')
+    n_cols = text.count('\n\n') + 1
     print(f'n_cols is {n_cols}')
 
-    buffer = []
-    for i in range(n_cols):
-        column = wrap(text, COL_WIDTH)
-        buffer.append(column)
-
-    output = zip_longest(buffer, fillvalue=' ')
-
-    return output
+    buffer = [column.strip() for column in text.split('\n\n')]
+    # columns = text.split('\n\n')
+    # columns = [col.strip() for col in columns]
+    # print(f'columns is {columns}')
+    print(f'buffer is {buffer}')
+    if len(buffer) != n_cols:
+        raise ValueError
+    for i, col in enumerate(buffer):
+        buffer[i] = wrap(buffer[i], COL_WIDTH)
+    print(f'buffer is now {buffer}')
+    intermediate = zip_longest(buffer)
+    for line in  intermediate:
+        print(*line)
 
 
 if __name__ == '__main__':
