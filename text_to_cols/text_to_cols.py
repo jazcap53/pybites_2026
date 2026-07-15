@@ -14,21 +14,18 @@ def text_to_columns(text):
        line1\nline2\nline3\n ... etc ...
        See also the tests for more info."""
     n_cols = text.count('\n\n') + 1
-    print(f'n_cols is {n_cols}')
 
     buffer = [column.strip() for column in text.split('\n\n')]
-    # columns = text.split('\n\n')
-    # columns = [col.strip() for col in columns]
-    # print(f'columns is {columns}')
+
     print(f'buffer is {buffer}')
     if len(buffer) != n_cols:
         raise ValueError
     for i, col in enumerate(buffer):
         buffer[i] = wrap(buffer[i], COL_WIDTH)
     print(f'buffer is now {buffer}')
-    intermediate = zip_longest(buffer)
-    for line in  intermediate:
-        print(*line)
+    zipped = zip_longest(*buffer, fillvalue=' '*COL_WIDTH)
+    print(f"here's list[zipped]: {list(zipped)}")
+    # rebuild zipped before processing it again
 
 
 if __name__ == '__main__':
