@@ -15,7 +15,15 @@ def text_to_columns(text):
        See also the tests for more info."""
     n_cols = text.count('\n\n')
     print(f'n_cols is {n_cols}')
-    return wrap(text, COL_WIDTH)
+
+    buffer = []
+    for i in range(n_cols):
+        column = wrap(text, COL_WIDTH)
+        buffer.append(column)
+
+    output = zip_longest(buffer, fillvalue=' ')
+
+    return output
 
 
 if __name__ == '__main__':
