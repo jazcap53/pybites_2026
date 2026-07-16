@@ -17,27 +17,31 @@ def text_to_columns(text):
 
     buffer = [column.strip() for column in text.split('\n\n')]
     buffer_2 = []
-    print(f'buffer is {buffer}')
+    # print(f'buffer is {buffer}')
     if len(buffer) != n_cols:
         raise ValueError
     for i, col in enumerate(buffer):
         buffer[i] = wrap(buffer[i], COL_WIDTH)
-    print(f'buffer is now {buffer}')
+    # print(f'buffer is now {buffer}')
     zipped = zip_longest(*buffer, fillvalue=' '*COL_WIDTH)
-    print(f"here's list[zipped]: {list(zipped)}")
+    # print(f"here's list[zipped]: {list(zipped)}")
     # rebuild zipped before processing it again
-    zipped = zip_longest(*buffer, fillvalue=' '*COL_WIDTH)
+    # zipped = zip_longest(*buffer, fillvalue=' '*COL_WIDTH)
+    buffer_2_item = ''
     for outer_item in zipped:
         for inner_item in outer_item:
-            buffer_2.append(inner_item.ljust(COL_WIDTH, ' '))
-    print(buffer_2)
+            buffer_2_item += inner_item.ljust(COL_WIDTH, ' ') + '    '
+        buffer_2.append(buffer_2_item + '\n')
+        buffer_2_item = ''
+    # print(f'buffer_2 is now {buffer_2}')
+    return buffer_2
 
 
 if __name__ == '__main__':
     my_lines = text_to_columns("""My house is small but cosy.
 
     It has a white kitchen and an empty fridge.""")
-    print(f'the type of my_lines is {type(my_lines)}')
+    # print(f'the type of my_lines is {type(my_lines)}')
 
     for line in my_lines:
-        print(line)
+        print(line, end='')
