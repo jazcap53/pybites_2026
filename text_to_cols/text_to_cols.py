@@ -1,11 +1,8 @@
 from itertools import zip_longest
-from textwrap import wrap
-import re
-
+import textwrap
 
 
 COL_WIDTH = 20
-
 
 def text_to_columns(text):
     """Split text (input arg) to columns, the amount of double
@@ -16,15 +13,13 @@ def text_to_columns(text):
     n_cols = text.count('\n\n') + 1
 
     buffer = [column.strip() for column in text.split('\n\n')]
-    # buffer_2 = []
     if len(buffer) != n_cols:
         raise ValueError
-    for i, col in enumerate(buffer):
-        buffer[i] = wrap(buffer[i], COL_WIDTH)
+    buffer = [textwrap.wrap(buffer_item, COL_WIDTH) for buffer_item in buffer]
     zipped = zip_longest(*buffer, fillvalue=' '*COL_WIDTH)
-    buffer_2 = [inner_item.ljust(COL_WIDTH, ' ') + '    ' for outer_item in zipped for inner_item in outer_item]
-    buffer_2 = ''.join(buffer_2)
-    return buffer_2
+    buffer = [inner_item.ljust(COL_WIDTH, ' ') + '    ' for outer_item in zipped for inner_item in outer_item]
+    buffer = ''.join(buffer)
+    return buffer
 
 
 if __name__ == '__main__':
