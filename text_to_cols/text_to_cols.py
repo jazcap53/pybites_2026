@@ -17,23 +17,18 @@ def text_to_columns(text):
 
     buffer = [column.strip() for column in text.split('\n\n')]
     buffer_2 = []
-    # print(f'buffer is {buffer}')
     if len(buffer) != n_cols:
         raise ValueError
     for i, col in enumerate(buffer):
         buffer[i] = wrap(buffer[i], COL_WIDTH)
-    # print(f'buffer is now {buffer}')
     zipped = zip_longest(*buffer, fillvalue=' '*COL_WIDTH)
-    # print(f"here's list[zipped]: {list(zipped)}")
-    # rebuild zipped before processing it again
-    # zipped = zip_longest(*buffer, fillvalue=' '*COL_WIDTH)
     buffer_2_item = ''
     for outer_item in zipped:
         for inner_item in outer_item:
             buffer_2_item += inner_item.ljust(COL_WIDTH, ' ') + '    '
         buffer_2.append(buffer_2_item + '\n')
         buffer_2_item = ''
-    # print(f'buffer_2 is now {buffer_2}')
+    buffer_2 = ''.join(buffer_2)
     return buffer_2
 
 
