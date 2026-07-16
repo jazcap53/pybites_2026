@@ -1,11 +1,22 @@
+DAY_START = 0
+DAY_END = 21
+
+
 def get_weekdays(calendar_output):
     """Receives a multiline Unix cal output and returns a mapping (dict) where
        keys are int days and values are the 2 letter weekdays (Su Mo Tu ...)"""
     weekdays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
     dates = calendar_output.splitlines()[2:]
-    print(weekdays)
-    print(dates)
-
+    dates[-1] = dates[-1].ljust(DAY_END)
+    print(f'weekdays is {weekdays}')
+    print(f'dates is {dates}')
+    text_dates = []
+    for i in range(len(dates)):
+        for j in range(DAY_START, DAY_END, 3):
+            text_date = dates[i][j] + dates[i][j+1]
+            if text_date != '  ':
+                text_dates.append(int(text_date))
+    print(f'text_dates is {text_dates}')
     print(calendar_output)
 
 
