@@ -12,10 +12,10 @@ Su Mo Tu We Th Fr Sa
 22 23 24 25 26 27 28
 29 30
 
-In this Bite we are going to ignore the existance of Python's calendar module for a minute and do a parsing Kata.
-Complete the get_weekdays function below that takes a multiline string output from the Unix cal command (see the
-TESTS tab for examples) and convert it to a mapping (dict) where the keys are day ints and the values are the 2
-letter week days (Su Mo Tu ...).
+In this Bite we are going to ignore the existence of Python's calendar module for a minute and do a
+parsing Kata. Complete the get_weekdays function below that takes a multiline string output from the Unix cal
+command (see the TESTS tab for examples) and convert it to a mapping (dict) where the keys are day ints and the
+values are the 2 letter week days (Su Mo Tu ...).
 
 This way it's easy to lookup any date and get the week day returned (again see how we use the function in the tests)
 
