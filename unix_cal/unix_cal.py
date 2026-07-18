@@ -1,5 +1,3 @@
-from calendar import firstweekday
-
 DAY_START = 0
 DAY_END = 21
 
@@ -10,8 +8,6 @@ def get_weekdays(calendar_output):
     weekdays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
     dates = calendar_output.splitlines()[2:]  # ignore the header
     dates[-1] = dates[-1].ljust(DAY_END)  # append spaces to last week if needed
-    print(f'weekdays is {weekdays}')
-    print(f'dates is {dates}')
     text_date_index = dates[0].find('1')
     text_date_offset = (text_date_index - 1) // 3
     ret = {}
@@ -19,9 +15,8 @@ def get_weekdays(calendar_output):
         for j in range(DAY_START, DAY_END, 3):
             text_date = dates[i][j] + dates[i][j+1]
             if text_date != '  ':
-                ret[int(text_date)] = weekdays[(text_date_offset + int(text_date) - 1) % 7 ]
-    print(calendar_output)
-    print(f'ret is {ret}')
+                int_date = int(text_date)
+                ret[int_date] = weekdays[(text_date_offset + int_date - 1) % 7 ]
     return ret
 
 
