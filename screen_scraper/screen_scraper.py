@@ -21,4 +21,29 @@ output = """
 
 def sysinfo_scrape(output):
     """Scrapes the output from screenfetch and returns a dictionary"""
-    pass
+    lines = output.splitlines()
+    if not lines:
+        raise ValueError('no lines')
+    ret = {}
+    for line_num in range(len(lines)):
+        line_offset = lines[line_num].rfind('  ') + 2
+        sep_offset = lines[line_num].find(': ', line_offset)
+
+        if line_offset > 2:
+            break
+
+
+    ret['Name'] = lines[line_num][line_offset:]
+    for i in range(line_num + 1, len(lines)):
+        value_pos = lines[i].find(':', line_offset) + 2
+        if value_pos == 1:
+            continue
+        key_pos = lines[i].rfind(' ', value_pos) + 1
+        key = lines[i][key_pos: value_pos].strip()
+        ret[key] = lines[i][value_pos:].strip()
+    return ret
+
+
+
+if __name__ == '__main__':
+    print(sysinfo_scrape(output))
