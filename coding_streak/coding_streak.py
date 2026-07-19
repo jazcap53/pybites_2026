@@ -24,12 +24,11 @@ def calculate_streak(dates):
        See the tests for more examples that will be used to pass your code.
     """
     date_list = sorted(list(dates), reverse=True)
-    streak = int(TODAY in date_list)
-    # streak = 0
+    streak = today_in_list = int(TODAY in date_list)
     for i, item in enumerate(date_list):
         if item == TODAY:
             continue
-        if item == TODAY - timedelta(days=i):
+        elif item == TODAY - timedelta(days=i+1-today_in_list):
             streak += 1
         else:
             break
@@ -38,18 +37,50 @@ def calculate_streak(dates):
 
 
 if __name__ == '__main__':
-    extract_dates("""
+    print(calculate_streak(extract_dates("""
     +------------+------------+---------+
     | date       | activity   | count   |
     |------------+------------+---------|
-    | 2018-11-10 | pcc        | 1       |
-    | 2018-11-09 | 100d       | 1       |
-    | 2018-11-07 | 100d       | 2       |
-    | 2018-10-23 | pcc        | 1       |
+    | 2018-11-12 | pcc        | 1       |
+    | 2018-11-11 | 100d       | 1       |
+    | 2018-11-10 | 100d       | 2       |
+    | 2018-10-15 | pcc        | 1       |
     | 2018-10-15 | pcc        | 1       |
     | 2018-10-05 | bite       | 1       |
     | 2018-09-21 | bite       | 4       |
     | 2018-09-18 | bite       | 2       |
-    | 2018-09-18 | bite       | 4       |
+    | 2018-09-16 | bite       | 4       |
     +------------+------------+---------+
-    """)
+    """)))
+
+    # extract_dates("""
+    # +------------+------------+---------+
+    # | date       | activity   | count   |
+    # |------------+------------+---------|
+    # | 2018-11-10 | pcc        | 1       |
+    # | 2018-11-09 | 100d       | 1       |
+    # | 2018-11-07 | 100d       | 2       |
+    # | 2018-10-23 | pcc        | 1       |
+    # | 2018-10-15 | pcc        | 1       |
+    # | 2018-10-05 | bite       | 1       |
+    # | 2018-09-21 | bite       | 4       |
+    # | 2018-09-18 | bite       | 2       |
+    # | 2018-09-18 | bite       | 4       |
+    # +------------+------------+---------+
+    # """)
+    #
+    # extract_dates("""
+    # +------------+------------+---------+
+    # | date       | activity   | count   |
+    # |------------+------------+---------|
+    # | 2018-11-11 | pcc        | 1       |
+    # | 2018-11-09 | 100d       | 1       |
+    # | 2018-11-07 | 100d       | 2       |
+    # | 2018-10-23 | pcc        | 1       |
+    # | 2018-10-15 | pcc        | 1       |
+    # | 2018-10-05 | bite       | 1       |
+    # | 2018-09-21 | bite       | 4       |
+    # | 2018-09-18 | bite       | 2       |
+    # | 2018-09-18 | bite       | 4       |
+    # +------------+------------+---------+
+    # """)
