@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, date
+from datetime import timedelta, date
 
 TODAY = date(2018, 11, 12)
 
