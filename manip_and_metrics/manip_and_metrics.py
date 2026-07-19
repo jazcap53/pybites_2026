@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from typing import List, Set, Tuple
+from string import punctuation
 
 
 STOPWORDS: set = {
@@ -43,6 +44,11 @@ class Corpora:
     * extra
     * stopwords
     """
+    txt: str
+    extra: str
+    stopwords: set
+    count: int = 5
+    tag: str = '#'
 
     @property
     def cleaned(self) -> str:
@@ -55,7 +61,7 @@ class Corpora:
         :param txt: Corpus of text
         :return: cleaned up corpus
         """
-        pass
+        return self.txt.lower()
 
     @property
     def metrics(self) -> List[Tuple[str, int]]:
