@@ -1,0 +1,35 @@
+This bite will get you to play around with creating a dataclass and some text manipulation,
+formatting, and metrics gathering.
+
+You are to take a corpus of text and clean it up by
+A) converting it to lowercase,
+B) removing all punctuation (use: string.punctuation) and
+C) replacing newlines by spaces.
+
+In addition, you will add the ability to remove extra characters as well (whole words and subwords, so
+if extra contains "term", the term in terminator will also be removed, leaving only inator behind).
+
+Once you have a method that cleans up the corpus, you will be asked to count each words occurrence, while
+ignoring all stopwords. A set of stopwords have been provided for you. The method to generate the word
+metrics will have the option to adjust the amount of words to be returned, but will default to 5. This
+will be controlled by the class variable count
+
+Once you can generate the metrics, those will be used to create a textual graph representation of the top
+word occurrences in the body of text.
+
+For example, the word nation in the Gettysburg address would be displayed in this manner:
+
+    nation #####
+
+Note that the hashtag # character will be controlled by the tag variable.
+
+Further details can be obtained from looking at the docstrings and tests.
+
+Be aware that in the Gettysburg Address a weird unicode hyphen between some words must be dealt with
+individually otherwise you will end up joining the two words together.
+
+For example:
+    original text: devotion—that
+    correctly processed: devotion that
+    incorrectly processed: devotionthat
+
