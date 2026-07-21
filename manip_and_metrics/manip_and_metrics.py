@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from typing import List, Set, Tuple
 import string
+from collections import Counter
 
 
 STOPWORDS: set = {
@@ -50,6 +51,9 @@ class Corpora:
     count: int = 5
     tag: str = '#'
 
+    def __post_init__(self):
+        self.stopwords = STOPWORDS
+
     @property
     def cleaned(self) -> str:
         """Takes a corpus and cleans it up.
@@ -67,8 +71,6 @@ class Corpora:
             self.txt = self.txt.replace(item, '')
         self.txt = self.txt.translate(table)
         self.txt = self.txt.replace('\n', ' ')
-        # self.txt = self.txt.replace('  ', ' ')
-        # print(self.txt.lower())
         return self.txt.lower() + ' '
 
     @property
@@ -81,7 +83,11 @@ class Corpora:
 
         :return: List of tuples, i.e. ("word", count)
         """
-        pass
+        counter = Counter([word for word in self.cleaned.split()])
+        for stop_item in self.stopwords:
+            del counter[stop_item]
+
+        return counter.most_common(self.count)
 
     @property
     def graph(self) -> None:
@@ -109,9 +115,20 @@ class Corpora:
         :param metrics: List of tuples with word counts
         :return: None
         """
-        pass
+        metrics_out = self.metrics
+        print(f'type of metrics_out is {type(metrics_out)}')
+        print(f'type of metrics_out[0] is {type(metrics_out[0])}')
+        print(f'type of metrics_out[0][0] is {type(metrics_out[0][0])}')
+        enumerated = enumerate(metrics_out)
+        for item in enumerated:
+            # if item[0] < self.count:
+            print(item)
+
+
 
 
 if __name__ == '__main__':
     corp_1 = Corpora(GETTYSBURG).cleaned
-    print(corp_1)
+    # print(corp_1)
+    corp_2 = Corpora(GETTYSBURG).metrics
+    corp_3 = Corpora(GETTYSBURG).graph
