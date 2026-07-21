@@ -116,13 +116,13 @@ class Corpora:
         :return: None
         """
         metrics_out = self.metrics
-        print(f'type of metrics_out is {type(metrics_out)}')
-        print(f'type of metrics_out[0] is {type(metrics_out[0])}')
-        print(f'type of metrics_out[0][0] is {type(metrics_out[0][0])}')
+        # print(f'type of metrics_out is {type(metrics_out)}')
+        # print(f'type of metrics_out[0] is {type(metrics_out[0])}')
+        # print(f'type of metrics_out[0][0] is {type(metrics_out[0][0])}')
         enumerated = enumerate(metrics_out)
         for item in enumerated:
-            # if item[0] < self.count:
             print(item)
+            print(format(item[1][0], " >10") + ' ' + self.tag * item[1][1])
 
 
 
