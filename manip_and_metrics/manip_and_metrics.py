@@ -62,12 +62,14 @@ class Corpora:
         :return: cleaned up corpus
         """
         # remove em dash and en dash and extra chars
-        table = str.maketrans('\u2013\u2014', '  ', string.punctuation + self.extra)
+        table = str.maketrans('\u2013\u2014', '  ', string.punctuation)
+        for item in self.extra:
+            self.txt = self.txt.replace(item, '')
         self.txt = self.txt.translate(table)
         self.txt = self.txt.replace('\n', ' ')
         # self.txt = self.txt.replace('  ', ' ')
         # print(self.txt.lower())
-        return self.txt.lower()
+        return self.txt.lower() + ' '
 
     @property
     def metrics(self) -> List[Tuple[str, int]]:
