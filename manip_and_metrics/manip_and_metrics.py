@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from typing import List, Set, Tuple
-from string import punctuation
+import string
 
 
 STOPWORDS: set = {
@@ -45,8 +45,8 @@ class Corpora:
     * stopwords
     """
     txt: str
-    extra: str
-    stopwords: set
+    extra: str = ''
+    stopwords: set = None
     count: int = 5
     tag: str = '#'
 
@@ -61,6 +61,11 @@ class Corpora:
         :param txt: Corpus of text
         :return: cleaned up corpus
         """
+        table = str.maketrans('\u2013\u2014', '  ', string.punctuation)  # em dash and en dash
+        self.txt = self.txt.translate(table)
+        self.txt = self.txt.replace('\n', ' ')
+        # self.txt = self.txt.replace('  ', ' ')
+        # print(self.txt.lower())
         return self.txt.lower()
 
     @property
@@ -102,3 +107,8 @@ class Corpora:
         :return: None
         """
         pass
+
+
+if __name__ == '__main__':
+    corp_1 = Corpora(GETTYSBURG).cleaned
+    print(corp_1)
