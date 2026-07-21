@@ -53,6 +53,8 @@ class Corpora:
 
     def __post_init__(self):
         self.stopwords = STOPWORDS
+        # if self.txt[0] == 'S':
+        #     self.count = 10
 
     @property
     def cleaned(self) -> str:
@@ -89,6 +91,7 @@ class Corpora:
 
         return counter.most_common(self.count)
 
+
     @property
     def graph(self) -> None:
         """Generates a textual graph of the words
@@ -116,12 +119,13 @@ class Corpora:
         :return: None
         """
         metrics_out = self.metrics
+        # print(f'in graph(), value of self.count is {self.count}')
         # print(f'type of metrics_out is {type(metrics_out)}')
         # print(f'type of metrics_out[0] is {type(metrics_out[0])}')
         # print(f'type of metrics_out[0][0] is {type(metrics_out[0][0])}')
         enumerated = enumerate(metrics_out)
         for item in enumerated:
-            print(item)
+            # print(item)
             print(format(item[1][0], " >10") + ' ' + self.tag * item[1][1])
 
 
