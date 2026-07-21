@@ -61,7 +61,8 @@ class Corpora:
         :param txt: Corpus of text
         :return: cleaned up corpus
         """
-        table = str.maketrans('\u2013\u2014', '  ', string.punctuation)  # em dash and en dash
+        # remove em dash and en dash and extra chars
+        table = str.maketrans('\u2013\u2014', '  ', string.punctuation + self.extra)
         self.txt = self.txt.translate(table)
         self.txt = self.txt.replace('\n', ' ')
         # self.txt = self.txt.replace('  ', ' ')
