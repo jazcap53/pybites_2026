@@ -67,10 +67,14 @@ class Corpora:
         :param txt: Corpus of text
         :return: cleaned up corpus
         """
+        my_punctuation = ''.join([ch for ch in string.punctuation if ch != "'"])
         # remove em dash and en dash and extra chars
-        table = str.maketrans('\u2013\u2014', '  ', string.punctuation)
         for item in self.extra:
-            self.txt = self.txt.replace(item, '')
+            if item == '’':
+                self.txt = self.txt.replace(item, ' ')
+            else:
+                self.txt = self.txt.replace(item, '')
+        table = str.maketrans('\u2013\u2014\'', '   ', my_punctuation)
         self.txt = self.txt.translate(table)
         self.txt = self.txt.replace('\n', ' ')
         return self.txt.lower() + ' '
