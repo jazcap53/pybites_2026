@@ -3,8 +3,30 @@ import re
 
 def strip_comments(code):
     # see Bite description
-
+    ret_str = ''
     lines = code.splitlines()
+
+    for line_num in range(len(lines)):
+        three_q_pos = None
+        current_line = lines[line_num]
+        if three_q_pos is None:  # we've seen no triple quotes
+            open_3q_pos = current_line.find('"""')
+            if open_3q_pos == -1:
+                ret_str += edited_line(lines[line_num])  # process the line
+            else:
+                three_q_pos =  open_3q_pos
+        else:  # we're looking for second triple quote of pair
+            close_3q_pos = current_line.rfind('"""')
+            if close_3q_pos == -1:
+                continue  # skip this line
+            else:
+                three_q_pos = None  # reset
+                continue  # skip this line
+    return ret_str
+
+
+
+
 
 
 def edited_line(line: str):
@@ -34,5 +56,4 @@ def edited_line(line: str):
             break
     return return_str
 
-                single_quote_pos = ix
 
