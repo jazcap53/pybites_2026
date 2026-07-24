@@ -30,6 +30,7 @@ def strip_comments(code):
 
 
 def edited_line(line: str):
+    return line + '\n'
     looking_for = "\"'#"
     open_single_quote_at = None
     close_single_quote_at = None
