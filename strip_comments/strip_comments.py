@@ -35,6 +35,8 @@ def find_right_triple_quote_at(line):
 
 
 def edited_line(line: str):
+    append_newline = True
+
     hash_at = line.find('#')
     if hash_at == -1:
         local_ret_str = line
@@ -47,10 +49,12 @@ def edited_line(line: str):
             before_hash, hash, after_hash = line.partition('#')
             if all([ch == ' ' for ch in before_hash]):  # comment is on line by itself
                 local_ret_str = ''
+                append_newline = False
             else:
                 local_ret_str = before_hash.rstrip()
-
-    return local_ret_str + '\n'
+    if append_newline:
+        local_ret_str += '\n'
+    return local_ret_str
 
 
 if __name__ == '__main__':
