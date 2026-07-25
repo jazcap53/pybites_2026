@@ -6,7 +6,6 @@ def strip_comments(code):
     ret_str = ''
     lines = code.splitlines()
 
-    # left_3q_posn = right_3q_posn = None
     in_docstring = False
     for line_num in range(len(lines)):
         current_line = lines[line_num]
@@ -14,18 +13,14 @@ def strip_comments(code):
         if not in_docstring:
             left_3q_posn = find_left_triple_quote_at(current_line)
             if left_3q_posn == -1:
-                left_3q_posn = None
                 ret_str += edited_line(current_line)  # process the line
             # found left, look for right on same line
-            elif (right_3q_posn := find_right_triple_quote_at(current_line)) > left_3q_posn:
-                left_3q_posn = right_3q_posn = None
+            elif find_right_triple_quote_at(current_line) > left_3q_posn:
                 in_docstring = False  # found both 3q's in this line
             else:
-                right_3q_posn = None
                 in_docstring = True
         else:  # if we're in a docstring
-            if (right_3q_posn := find_right_triple_quote_at(current_line)) > -1:
-                left_3q_posn = right_3q_posn = None
+            if find_right_triple_quote_at(current_line) > -1:
                 in_docstring = False
 
     return ret_str.rstrip('\n')
