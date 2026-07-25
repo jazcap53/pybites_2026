@@ -3,7 +3,7 @@ import re
 
 def strip_comments(code):
     # see Bite description
-    ret_str = ''
+    global_ret_str = ''
     lines = code.splitlines()
 
     in_docstring = False
@@ -13,7 +13,7 @@ def strip_comments(code):
         if not in_docstring:
             left_3q_posn = find_left_triple_quote_at(current_line)
             if left_3q_posn == -1:
-                ret_str += edited_line(current_line)  # process the line
+                global_ret_str += edited_line(current_line)  # process the line
             # found left, look for right on same line
             elif find_right_triple_quote_at(current_line) > left_3q_posn:
                 in_docstring = False  # found both 3q's in this line
@@ -23,7 +23,7 @@ def strip_comments(code):
             if find_right_triple_quote_at(current_line) > -1:
                 in_docstring = False
 
-    return ret_str.rstrip('\n')
+    return global_ret_str.rstrip('\n')
 
 
 def find_left_triple_quote_at(line):
@@ -37,20 +37,20 @@ def find_right_triple_quote_at(line):
 def edited_line(line: str):
     hash_at = line.find('#')
     if hash_at == -1:
-        ret_str = line
+        local_ret_str = line
     else:
         left_single_quote_at = line.find('\'')
         right_single_quote_at = line.rfind('\'')
         if left_single_quote_at < hash_at < right_single_quote_at:
-            ret_str = line
+            local_ret_str = line
         else:  # there is a hash mark but it is not within single quotes
-            if hash_at == 0:
-                ret_str = ''
-            elif hash_at in (1, 2):
-                raise ValueError('Bad indentation')
+            before_hash, hash, after_hash = line.partition('#')
+            if all([ch == ' ' for ch in before_hash]):  # comment is on line by itself
+                local_ret_str = ''
             else:
-                ret_str = line[:hash_at - 2]
-    return ret_str + '\n'
+                local_ret_str = before_hash.rstrip()
+
+    return local_ret_str + '\n'
 
 
 if __name__ == '__main__':
