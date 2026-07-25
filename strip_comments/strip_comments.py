@@ -6,23 +6,37 @@ def strip_comments(code):
     ret_str = ''
     lines = code.splitlines()
 
-    three_q_pos = None
+    # left_3q_posn = right_3q_posn = None
+    in_docstring = False
     for line_num in range(len(lines)):
         current_line = lines[line_num]
-        if three_q_pos is None:  # we've not seen triple quotes
-            open_3q_pos = current_line.find('"""')
-            if open_3q_pos == -1:
-                ret_str += edited_line(lines[line_num])  # process the line
+
+        if not in_docstring:
+            left_3q_posn = find_left_triple_quote_at(current_line)
+            if left_3q_posn == -1:
+                left_3q_posn = None
+                ret_str += edited_line(current_line)  # process the line
+            # found left, look for right on same line
+            elif (right_3q_posn := find_right_triple_quote_at(current_line)) > left_3q_posn:
+                left_3q_posn = right_3q_posn = None
+                in_docstring = False  # found both 3q's in this line
             else:
-                three_q_pos = open_3q_pos
-        else:  # we're looking for second triple quote of pair
-            close_3q_pos = current_line.rfind('"""')
-            if close_3q_pos == -1:
-                continue  # skip this line
-            else:  # we've found the second triple quote
-                three_q_pos = None  # reset
-                continue  # skip this line
+                right_3q_posn = None
+                in_docstring = True
+        else:  # if we're in a docstring
+            if (right_3q_posn := find_right_triple_quote_at(current_line)) > -1:
+                left_3q_posn = right_3q_posn = None
+                in_docstring = False
+
     return ret_str.rstrip('\n')
+
+
+def find_left_triple_quote_at(line):
+    return line.find('"""')
+
+def find_right_triple_quote_at(line):
+    return line.rfind('"""')
+
 
 
 def edited_line(line: str):
