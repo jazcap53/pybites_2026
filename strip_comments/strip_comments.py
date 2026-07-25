@@ -34,9 +34,9 @@ def strip_comments(code):
 def find_left_triple_quote_at(line):
     return line.find('"""')
 
+
 def find_right_triple_quote_at(line):
     return line.rfind('"""')
-
 
 
 def edited_line(line: str):
@@ -86,6 +86,7 @@ if __name__ == '__main__':
         print(f'actual:\n{after_strip}\n\nexpected:\n{multiline_docstring_after_strip}')
     else:
         print("success on test 3")
+    print()
     class_with_method = '''
     class SimpleClass:
         """Class docstrings go here."""
@@ -105,3 +106,19 @@ if __name__ == '__main__':
         print(f'actual:\n{after_strip}\n\nexpected:\n{class_with_method_after_strip}')
     else:
         print("success on test 2")
+    print()
+
+    single_comment = '''
+    def hello_world():
+        # A simple comment preceding a simple print statement
+        print("Hello World")
+    '''
+    single_comment_after_strip = '''
+    def hello_world():
+        print("Hello World")
+    '''
+    after_strip = strip_comments(single_comment)
+    if after_strip != single_comment_after_strip:
+        print(f'actual:\n{after_strip}\n\nexpected:\n{single_comment_after_strip}')
+    else:
+        print("success on test 1")
