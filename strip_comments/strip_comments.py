@@ -40,32 +40,22 @@ def find_right_triple_quote_at(line):
 
 
 def edited_line(line: str):
-    return line + '\n'
-    looking_for = "\"'#"
-    open_single_quote_at = None
-    close_single_quote_at = None
-    return_str = ''
-    hash_at = None
-    for ix, ch in enumerate(line):
-        if ch in looking_for:
-            if ch == '\'':
-                if open_single_quote_at is None:
-                    open_single_quote_at = ix
-                else:
-                    close_single_quote_at = ix
-            elif ch == '#':
-                if open_single_quote_at is not None and close_single_quote_at is None:
-                    continue  # hash is inside single quotes: ignore it
-                else:
-                    hash_at = ix
-                    return_str = line[: hash_at - 2]
-                    break
-            elif ch == '"':
-                pass
-
-        if return_str:
-            break
-    return return_str
+    hash_at = line.find('#')
+    if hash_at == -1:
+        ret_str = line
+    else:
+        left_single_quote_at = line.find('\'')
+        right_single_quote_at = line.rfind('\'')
+        if left_single_quote_at < hash_at < right_single_quote_at:
+            ret_str = line
+        else:  # there is a hash mark but it is not within single quotes
+            if hash_at == 0:
+                ret_str = ''
+            elif hash_at in (1, 2):
+                raise ValueError('Bad indentation')
+            else:
+                ret_str = line[:hash_at - 2]
+    return ret_str + '\n'
 
 
 if __name__ == '__main__':
