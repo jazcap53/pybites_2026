@@ -1,6 +1,3 @@
-import re
-
-
 def strip_comments(code):
     # see Bite description
     global_ret_str = ''
@@ -11,27 +8,19 @@ def strip_comments(code):
         current_line = lines[line_num]
 
         if not in_docstring:
-            left_3q_posn = find_left_triple_quote_at(current_line)
+            left_3q_posn = current_line.find('"""')
             if left_3q_posn == -1:
                 global_ret_str += edited_line(current_line)  # process the line
             # found left, look for right on same line
-            elif find_right_triple_quote_at(current_line) > left_3q_posn:
+            elif current_line.rfind('"""') > left_3q_posn:
                 in_docstring = False  # found both 3q's in this line
             else:
                 in_docstring = True
         else:  # if we're in a docstring
-            if find_right_triple_quote_at(current_line) > -1:
+            if current_line.rfind('"""') > -1:
                 in_docstring = False
 
     return global_ret_str.rstrip('\n')
-
-
-def find_left_triple_quote_at(line):
-    return line.find('"""')
-
-
-def find_right_triple_quote_at(line):
-    return line.rfind('"""')
 
 
 def edited_line(line: str):
