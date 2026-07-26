@@ -25,4 +25,21 @@ def get_top_books(content=None):
     """
     if content is None:
         content = load_page()
-    # code here ...
+    soup = BeautifulSoup(content, 'html.parser')
+    kids = [bolded for bolded in soup.find_all('b')]
+    for kid in kids:
+        if kid:
+            print(kid)
+        else:
+            print("no kidding")
+    kid_books = [kid.next_sibling for kid in kids]
+    for item in kid_books:
+        if item is not None and (next_item := item.find_next("span", style="font-weight:400;")) is not None:
+            print(f'item is {item}  next_item is {next_item}')
+            # print(f'kid_book.find_next("span", style="font-weight:400;") is {kid_book.find_next("span", style="font-weight:400;")}')
+
+
+
+
+if __name__ == '__main__':
+    get_top_books()
