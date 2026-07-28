@@ -1,6 +1,6 @@
 import pytest
 
-from tribe import get_top_books, load_page
+from recommended_books import get_top_books, load_page
 
 
 @pytest.fixture(scope='module')
