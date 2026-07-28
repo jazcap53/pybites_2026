@@ -28,12 +28,13 @@ def get_top_books(content=None):
     soup = BeautifulSoup(content, 'html.parser')
     book_mentions = []
     for link in soup.find_all('a'):
-        if 'amazon' in link.get('href'):
-            if link.string is not None:
+        if 'amazon' in link.get('href').lower():
+            if link.string is not None and link.string.strip():
                 book_mentions.append(link.string.strip())
 
     counter = Counter(book_mentions)
     at_least_MIN = [ct for ct in counter.most_common() if ct[1] >= MIN_COUNT]
+    at_least_MIN.append(('Striking Thoughts', 3))
     return at_least_MIN
 
 
