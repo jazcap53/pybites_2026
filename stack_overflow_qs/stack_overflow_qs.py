@@ -18,7 +18,7 @@ def has_unique_class_value(tag):
    return is_ok
 
 
-def is_div_class_view_million_views(tag):
+def is_div_class_view(tag):
     is_ok = (tag.name == "div"
              and tag.has_attr("class")
              and tag.attrs["class"][0] == "views")
@@ -32,21 +32,19 @@ def top_python_questions(url=cached_so_url):
        Return a list of (question, num_votes) tuples ordered
        by num_votes descending (see tests for expected output).
     """
+    ret_val = []
     r = requests.get(url)
     soup = BeautifulSoup(r.text, 'html.parser')
-    print(soup.prettify())
+
     question_links = soup.find_all(has_unique_class_value)
-
     vote_count_posts = soup.find_all(is_span_has_vote_count_post)
+    views = soup.find_all(is_div_class_view)
 
-    views = soup.find_all(is_div_class_view_million_views)
+    for i in range(len(question_links)):
+        if 'm' in views[i].string:
+            ret_val.append((question_links[i].string, int(vote_count_posts[i].string)))
 
-    print(len(question_links))
-    print(len(vote_count_posts))
-    print(len(views))
-
-
-
+    return sorted(ret_val, key=lambda v: v[1], reverse=True)
 
 
 
