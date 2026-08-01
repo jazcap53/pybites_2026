@@ -1,6 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
-import re
 
 cached_so_url = 'https://bites-data.s3.us-east-2.amazonaws.com/so_python.html'
 
@@ -13,11 +12,17 @@ def is_span_has_vote_count_post(tag):
 
 
 def has_unique_class_value(tag):
-   is_ok = ((tag.name == 'a')
-            and (tag.has_attr("class"))
-            and (tag.attrs["class"][0] == "question-hyperlink"))
-
+   is_ok = (tag.name == "a"
+           and tag.has_attr("class")
+           and tag.attrs["class"][0] == "question-hyperlink")
    return is_ok
+
+
+def is_div_class_view_million_views(tag):
+    is_ok = (tag.name == "div"
+             and tag.has_attr("class")
+             and tag.attrs["class"][0] == "views")
+    return is_ok
 
 
 def top_python_questions(url=cached_so_url):
@@ -34,23 +39,11 @@ def top_python_questions(url=cached_so_url):
 
     vote_count_posts = soup.find_all(is_span_has_vote_count_post)
 
-    vote_count_post = []
-    # for ql in question_links:
-    #     print(ql)
-    #     vcp = ql.find_next("span")
-    #     if vcp is not None:
-    #         print("it's not None")
-    #     if vcp.has_attr("class"):
-    #         print("has class")
-    #     if "vote-count-post" not in vcp["class"]:
-    #         continue
-    #     else:
-    #         print("has vote count post")
-    #     vote_count_post.append(vcp)
-    #     print(vcp)
+    views = soup.find_all(is_div_class_view_million_views)
 
     print(len(question_links))
     print(len(vote_count_posts))
+    print(len(views))
 
 
 
