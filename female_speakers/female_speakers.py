@@ -24,7 +24,10 @@ def get_pycon_speaker_first_names(soup=None):
        multiple speakers so you need to extract them.
        Return a list of first names
     """
-    pass
+    soup = _get_soup()
+    print(soup.prettify())
+    speaker_names = soup.find_all("span", class_="speaker")
+    print(speaker_names)
 
 
 def get_percentage_of_female_speakers(first_names):
