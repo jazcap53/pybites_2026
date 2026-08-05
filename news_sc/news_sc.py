@@ -25,24 +25,21 @@ def get_top_titles(url, top=5):
     """
     soup = _create_soup_obj(url)
 
-    # first_span_title = soup.find("span", class_="title")
-    # # print(first_span_title)
-    # first_span_title_ancestor = first_span_title.parent
-    # while first_span_title not in first_span_title_ancestor.children:
-    #     first_span_title_ancestor = first_span_title_ancestor.parent
-    #
-    # span_titles = first_span_title_ancestor.find_all("span", class_="title")
-
     span_titles = soup.find_all("span", class_="title")
 
-
-    # title_iter = first_span_title_ancestor.children
     i = 1
     for title in span_titles:
         next_link = title.find_next("a")
         print(i, next_link.string)
-        # next_control = soup.find("span", class_="control")
-        # print(f'next control span is {next_control}')
+        previous_tr = title.find_previous("tr")
+        following_tr = previous_tr.find_next_sibling("tr")
+        following_span_smaller = following_tr.find_next("span", class_="smaller")
+        print(f'following_span_smaller.name is {following_span_smaller.name}')
+        print(f'following_span_smaller.attrs is {following_span_smaller.attrs}')
+        for s in following_span_smaller.strings:
+            if s.strip()[0].isdigit():
+                print(s)
+                break
 
         i += 1
 
