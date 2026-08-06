@@ -28,26 +28,38 @@ def get_top_titles(url, top=5):
 
     span_titles = soup.find_all("span", class_="title")
     entries = []
+    points = comments = 0
     i = 1
     for title in span_titles:
         next_link = title.find_next("a")
+        next_string = next_link.string
         print(i, next_link.string)
         previous_tr = title.find_previous("tr")
         following_tr = previous_tr.find_next_sibling("tr")
         following_span_smaller = following_tr.find_next("span", class_="smaller")
         print(f'following_span_smaller.name is {following_span_smaller.name}')
         print(f'following_span_smaller.attrs is {following_span_smaller.attrs}')
+        bunch_of_strings_for_debug = []
         for s in following_span_smaller.strings:
             # if s.strip()[0].isdigit():
-            match = re.match(r'^\d+', s.strip())
+            bunch_of_strings_for_debug.append(s.strip())
+            match = re.match(r'(^\d+) points', s.strip())
                 # print(s)
                 # break
             if match:
-                print(int(match.group()))
-                break
+                points = int(match.group(1))
+                print(points)
+                # break
+            other_match = re.match(r'(^\d+) comments', s.strip())
+            if other_match:
+                comments = int(other_match.group(1))
+                print(f'also {comments} too')
+
+        entries.append(Entry(next_string, points, comments))
 
         i += 1
 
+    pass
     # print(soup.prettify())
 
 
