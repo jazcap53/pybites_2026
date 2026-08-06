@@ -35,7 +35,11 @@ def get_top_titles(url, top=5):
         next_string = next_link.string
         print(i, next_link.string)
         for sibling in next_link.find_next_siblings(True):
-            # if "href" in sibling.attrs:
+            for child in sibling.children:
+                if child.next.string is not None:
+                    print(child.next.string)
+                    next_string += ' (' + str(child.next.string) + ')'
+                    break
             if sibling.string is not None:
                 sub_url = sibling.string
                 title += ' ' + str(sub_url)
@@ -65,10 +69,10 @@ def get_top_titles(url, top=5):
 
     # pass
     sorted_entries = sorted(entries, key=lambda entry: (-entry[1], -entry[2]))
-    print(soup.prettify())
-    return sorted_entries
+    # print(soup.prettify())
+    return sorted_entries[:top]
 
 
 
 if __name__ == '__main__':
-    get_top_titles('https://bites-data.s3.us-east-2.amazonaws.com/news.python.sc/index.html')
+    print(get_top_titles('https://bites-data.s3.us-east-2.amazonaws.com/news.python.sc/index.html'))
