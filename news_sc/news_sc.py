@@ -1,4 +1,5 @@
 from collections import namedtuple
+import re
 
 from bs4 import BeautifulSoup, NavigableString
 import requests
@@ -26,7 +27,7 @@ def get_top_titles(url, top=5):
     soup = _create_soup_obj(url)
 
     span_titles = soup.find_all("span", class_="title")
-
+    entries = []
     i = 1
     for title in span_titles:
         next_link = title.find_next("a")
@@ -37,8 +38,12 @@ def get_top_titles(url, top=5):
         print(f'following_span_smaller.name is {following_span_smaller.name}')
         print(f'following_span_smaller.attrs is {following_span_smaller.attrs}')
         for s in following_span_smaller.strings:
-            if s.strip()[0].isdigit():
-                print(s)
+            # if s.strip()[0].isdigit():
+            match = re.match(r'^\d+', s.strip())
+                # print(s)
+                # break
+            if match:
+                print(int(match.group()))
                 break
 
         i += 1
