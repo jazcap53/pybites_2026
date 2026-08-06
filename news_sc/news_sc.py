@@ -60,7 +60,9 @@ def get_top_titles(url, top=5):
         i += 1
 
     pass
+    sorted_entries = sorted(entries, key=lambda entry: (-entry[1], -entry[2]))
     # print(soup.prettify())
+    return sorted_entries
 
 
 
