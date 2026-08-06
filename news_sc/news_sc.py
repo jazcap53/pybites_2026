@@ -34,11 +34,15 @@ def get_top_titles(url, top=5):
         next_link = title.find_next("a")
         next_string = next_link.string
         print(i, next_link.string)
+        for sibling in next_link.find_next_siblings(True):
+            # if "href" in sibling.attrs:
+            if sibling.string is not None:
+                sub_url = sibling.string
+                title += ' ' + str(sub_url)
+                print(f'title is now {title}')
         previous_tr = title.find_previous("tr")
         following_tr = previous_tr.find_next_sibling("tr")
         following_span_smaller = following_tr.find_next("span", class_="smaller")
-        print(f'following_span_smaller.name is {following_span_smaller.name}')
-        print(f'following_span_smaller.attrs is {following_span_smaller.attrs}')
         bunch_of_strings_for_debug = []
         for s in following_span_smaller.strings:
             # if s.strip()[0].isdigit():
@@ -59,9 +63,9 @@ def get_top_titles(url, top=5):
 
         i += 1
 
-    pass
+    # pass
     sorted_entries = sorted(entries, key=lambda entry: (-entry[1], -entry[2]))
-    # print(soup.prettify())
+    print(soup.prettify())
     return sorted_entries
 
 
