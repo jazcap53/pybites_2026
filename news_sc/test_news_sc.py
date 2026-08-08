@@ -1,4 +1,4 @@
-from news_sc import get_top_titles, Entry
+from news_sc_2 import get_top_titles, Entry
 
 homepage = ("https://bites-data.s3.us-east-2.amazonaws.com/"
             "news.python.sc/index.html")
