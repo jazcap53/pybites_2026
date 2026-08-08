@@ -29,47 +29,32 @@ def get_top_titles(url, top=5):
     span_titles = soup.find_all("span", class_="title")
     entries = []
     points = comments = 0
-    i = 1
     for title in span_titles:
         next_link = title.find_next("a")
         next_string = next_link.string
-        print(i, next_link.string)
         for sibling in next_link.find_next_siblings(True):
             for child in sibling.children:
                 if child.next.string is not None:
-                    print(child.next.string)
                     next_string += ' (' + str(child.next.string) + ')'
                     break
             if sibling.string is not None:
                 sub_url = sibling.string
                 title += ' ' + str(sub_url)
-                print(f'title is now {title}')
         previous_tr = title.find_previous("tr")
         following_tr = previous_tr.find_next_sibling("tr")
         following_span_smaller = following_tr.find_next("span", class_="smaller")
-        bunch_of_strings_for_debug = []
         for s in following_span_smaller.strings:
-            # if s.strip()[0].isdigit():
-            bunch_of_strings_for_debug.append(s.strip())
             match = re.match(r'(^\d+) points', s.strip())
-                # print(s)
-                # break
             if match:
                 points = int(match.group(1))
-                print(points)
-                # break
-            other_match = re.match(r'(^\d+) comments', s.strip())
-            if other_match:
-                comments = int(other_match.group(1))
-                print(f'also {comments} too')
+            match = re.match(r'(^\d+) comments', s.strip())
+            if match:
+                comments = int(match.group(1))
 
         entries.append(Entry(next_string, points, comments))
 
-        i += 1
-
-    # pass
     sorted_entries = sorted(entries, key=lambda entry: (-entry[1], -entry[2]))
-    # print(soup.prettify())
+
     return sorted_entries[:top]
 
 
