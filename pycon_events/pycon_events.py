@@ -3,7 +3,7 @@ from collections import namedtuple
 from typing import List
 
 import requests
-from bs4 import BeautifulSoup as Soup
+from bs4 import BeautifulSoup as Soup, BeautifulSoup
 from dateutil.parser import parse
 
 PYCON_DATA = "https://bites-data.s3.us-east-2.amazonaws.com/pycons.html"
@@ -106,8 +106,12 @@ def get_pycon_events(data=_get_pycon_data()) -> List[PyCon]:
     return a list of PyCon namedtuples. Pay attention to the
     application/ld+json data structure website data.
     """
-    pass
-
+    soup = BeautifulSoup(data, 'html.parser')
+    json_items = soup.find_all("script", type="application/ld+json")
+    for item in json_items:
+        loaded_json = json.loads(item.string.strip())
+        # print(f'type of loaded_json is {type(loaded_json)}')
+        print(loaded_json.items())
 
 def filter_pycons(pycons: List[PyCon],
                   year: int = 2019,
@@ -118,3 +122,7 @@ def filter_pycons(pycons: List[PyCon],
     that continent.
     """
     pass
+
+
+if __name__ == '__main__':
+    get_pycon_events()

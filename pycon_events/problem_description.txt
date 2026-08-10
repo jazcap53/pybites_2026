@@ -10,7 +10,7 @@ the country the start date, the end date and the homepage url. Make sure to pars
 as datetime.
 
 After retrieving all PyCon events complete the filter_pycons function. The function takes a list of PyCon
-namedtumples, a year and a continent as parameters. Based on the year and continent, return a list of all PyCons
+namedtuples, a year and a continent as parameters. Based on the year and continent, return a list of all PyCons
 that meet the requirements. To make it a bit easier for you, we provide a get_continent(country) function which
 takes a country name as a string and returns the continent of the country as a string.
 
