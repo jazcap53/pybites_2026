@@ -108,10 +108,15 @@ def get_pycon_events(data=_get_pycon_data()) -> List[PyCon]:
     """
     soup = BeautifulSoup(data, 'html.parser')
     json_items = soup.find_all("script", type="application/ld+json")
+    print(f'len json_items is {len(json_items)}')
+    pycon_list = []
     for item in json_items:
         loaded_json = json.loads(item.string.strip())
         # print(f'type of loaded_json is {type(loaded_json)}')
         print(loaded_json.items())
+        if 'PyCon' in loaded_json['name']:
+            pycon_list.append(loaded_json)
+    print(f'len(pycon_list) is {len(pycon_list)}')
 
 def filter_pycons(pycons: List[PyCon],
                   year: int = 2019,
