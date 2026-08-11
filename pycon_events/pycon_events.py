@@ -1,6 +1,8 @@
 import json
 from collections import namedtuple
 from typing import List
+from pprint import pprint
+import datetime as dt
 
 import requests
 from bs4 import BeautifulSoup as Soup, BeautifulSoup
@@ -113,10 +115,27 @@ def get_pycon_events(data=_get_pycon_data()) -> List[PyCon]:
     for item in json_items:
         loaded_json = json.loads(item.string.strip())
         # print(f'type of loaded_json is {type(loaded_json)}')
-        print(loaded_json.items())
+        # print(loaded_json.items())
         if 'PyCon' in loaded_json['name']:
-            pycon_list.append(loaded_json)
-    print(f'len(pycon_list) is {len(pycon_list)}')
+            name = loaded_json['name']
+            city, country = _get_city_country(loaded_json['location'])
+            start_date, end_date = _get_start_end_dates(loaded_json)
+            url = loaded_json['url']
+            pycon = PyCon(name, city, country, start_date, end_date, url)
+            # pprint(loaded_json)
+            pycon_list.append(pycon)
+    # print(f'len(pycon_list) is {len(pycon_list)}')
+    return pycon_list
+
+
+def _get_city_country(location):
+    return location['address']['addressLocality'], location['address']['addressCountry']
+
+
+def _get_start_end_dates(ld_json):
+    return (dt.datetime.fromisoformat(ld_json['startDate']),
+            dt.datetime.fromisoformat(ld_json['endDate']))
+
 
 def filter_pycons(pycons: List[PyCon],
                   year: int = 2019,
