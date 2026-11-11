@@ -145,8 +145,10 @@ def filter_pycons(pycons: List[PyCon],
     a list of PyCons that take place in that year and on
     that continent.
     """
-    pass
+    return [conference for conference in pycons
+            if get_continent(conference.country) == continent and
+            (conference.start_date.year == year or conference.end_date.year == year)]
 
 
 if __name__ == '__main__':
-    get_pycon_events()
+    print(filter_pycons(get_pycon_events()))
