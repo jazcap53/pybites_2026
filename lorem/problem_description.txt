@@ -1,0 +1,53 @@
+Lorem Ipsum is text used to demonstrate layout in documents (such as web pages) without
+distracting reviewers with real content.
+
+This article describes it nicely. Innovative developers have made a number of different lorem ipsum
+generators to mix it up a little, using themes like bacon or pirates.
+
+Let's create our own theme!
+
+In this bite, we want to create lorem ipsum text using words we scrape from a Wikipedia featured article
+of the day using BeautifulSoup.
+
+We don't use a live page - we work with static copy, so we can reliably test the code.
+
+Once we get the text of the article, we'll split the text into lower case words, removing all punctuation.
+Do not store empty strings if your algorithm extracts any from the article.
+
+For instance, when we scrape the article from January 1, 2020, the text starts like this:
+
+The black-and-red broadbill (Cymbirhynchus macrorhynchos) is a bird
+
+We would extract this list of words from this snippet of the text:
+
+['the', 'black', 'and', 'red', 'broadbill', 'cymbirhynchus', 'macrorhynchos', 'is', 'a','bird']
+
+Note how black-and-red became three words without the dashes.
+
+Word boundaries for this bite include dashes and spaces.
+
+In my solution, where the text included duplicates or words, I only kept one of them in my word list
+but the tests will pass fine with duplicates. It just means the results will bias towards the
+duplicated words.
+
+The function accepts a number of sentences to return, defaulting to 5. You should return this many
+sentences, each of them being nonsense text created using randomly chosen words from the list extracted
+from the Wikipedia article.
+
+Make sure the sentences are well-formed, that is with an uppercase letter at the start of each sentence
+and a period and space at the end of each-just like all the sentences in this description.
+
+If the function is called with < 1 for the number of sentences, raise a ValueError.
+
+While not part of the Bite, a great next step would be to allow a date argument and use this to
+choose the article from which to grab those words.
+
+HINT: BeautifulSoup takes in a parameter to tell it what type of parser to use. I suggest using html.parser.
+
+If you want an example, wiki_lorem_ipsum(5) might return:
+
+On a slightly slightly slightly egg usually bird mollusks conspicuous songbird deforestation range season. Twentyone hunting as full disturbed crustaceans breeds they neckband it iucn smaller songbird threatened. Population only they songbird forests season songbird are black nest has range or. Asian runt population twentyone smaller extensive trapping on three range sometimes insects females dry. Than it songbird three secondary it macrorhynchos black hunting hatching its underparts but.
+
+Nice nonsense? I hope so!
+
+Keep calm and code in Python!
